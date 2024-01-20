@@ -1,4 +1,6 @@
 use leptos::*;
+use std::str::FromStr;
+use strum::*;
 
 /// Default Home Page
 #[component]
@@ -18,6 +20,8 @@ pub fn Home() -> impl IntoView {
                 <Button increment=5 />
             </div>
 
+            <SelectAnimals />
+
         </div>
     }
 }
@@ -34,5 +38,59 @@ fn Button(#[prop(default = 1)] increment: i32) -> impl IntoView {
         >
             "Click me: " {count}
         </button>
+    }
+}
+
+#[derive(
+    Debug,
+    Default,
+    PartialEq,
+    Eq,
+    Clone,
+    strum::Display,
+    strum::EnumIs,
+    strum::EnumIter,
+    strum::EnumString,
+    strum::IntoStaticStr,
+)]
+enum Animals {
+    #[default]
+    Dog,
+    Cat,
+    Rabbit,
+    Bird,
+}
+
+use leptos::logging::*;
+#[component]
+fn SelectAnimals() -> impl IntoView {
+    let (selected_option, set_selected_option) = create_signal(Animals::default());
+
+    let options = Animals::iter()
+        .map(|itm| {
+            view! { <option value=itm.to_string()>{itm.to_string()}</option> }
+        })
+        .collect_view();
+
+    let on_input = move |evt| {
+        let value = event_target_value(&evt);
+        let value = value.as_ref();
+
+        let parsed = FromStr::from_str(value).unwrap_or_default();
+
+        set_selected_option(parsed)
+    };
+
+
+    view! {
+        <hr/>
+        <h2>"Select Your Favourite Animal"</h2>
+        <select
+            on:input=on_input
+            prop:selected=move || selected_option().to_string()
+            on:change=move |_| logging::log!("You selected: {}", selected_option())
+        >
+            {options}
+        </select>
     }
 }
