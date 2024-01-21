@@ -1,5 +1,5 @@
 use cfg_if::cfg_if;
-use leptos::html::Div;
+use leptos::html::{dialog, Div};
 use leptos::*;
 
 cfg_if! {
@@ -24,10 +24,14 @@ pub fn Modal() -> impl IntoView {
         let node = dialog_ref
             .get_untracked()
             .expect("input ref should be loaded");
+
         if let Some(target) = evt.target() {
             let target_node = target.dyn_into::<web_sys::Node>().ok();
             let is_inside = node.contains(target_node.as_ref());
             if !is_inside {
+                // --- NB: DELETE ME! ---
+                logging::log!("Clicked outside modal; closing modal");
+                // --- ---
                 set_show_overlay(false);
             }
         }
@@ -48,37 +52,40 @@ pub fn Modal() -> impl IntoView {
             <Show when=show_overlay fallback=|| ()>
                 <Portal mount=document().get_element_by_id("app").unwrap()>
                     <div class="portal_background">
-                        <dialog class="portal_content" open=show_overlay id="dialog">
+                        <dialog class="portal_content" open=show_overlay>
 
-                            <button id="btn-hide" on:click=move |_| set_show_overlay(false)>
-                                "Close ❌"
-                            </button>
-
-                            <aside class="portal_body">
-
-                                <p>"This is in the modal's (portal) body element"</p>
-
-                                <button
-                                    id="btn-toggle"
-                                    on:click=move |_| set_show_inside_overlay(
-                                        !show_inside_overlay(),
-                                    )
-                                >
-
-                                    "Toggle modal content"
+                            <div>
+                                <button id="btn-hide" on:click=move |_| set_show_overlay(false)>
+                                    "Close ❌"
                                 </button>
 
-                                <Show when=show_inside_overlay fallback=|| view! { "Hidden" }>
-                                    "Visible"
-                                </Show>
+                                <aside class="portal_body">
 
-                                <p>"More contents..."</p>
-                            </aside>
+                                    <p>"This is in the modal's (portal) body element"</p>
+
+                                    <button
+                                        id="btn-toggle"
+                                        on:click=move |_| set_show_inside_overlay(
+                                            !show_inside_overlay(),
+                                        )
+                                    >
+
+                                        "Toggle modal content"
+                                    </button>
+
+                                    <Show when=show_inside_overlay fallback=|| view! { "Hidden" }>
+                                        "Visible"
+                                    </Show>
+
+                                    <p>"More contents..."</p>
+                                </aside>
+                            </div>
+
                         </dialog>
                     </div>
                 </Portal>
             </Show>
+
         </div>
     }
 }
-
