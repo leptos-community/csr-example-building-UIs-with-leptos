@@ -12,10 +12,7 @@ fn main() {
             .unwrap()
             .unchecked_into(),
         || {
-            view! {
-                    <App />
-
-            }
+            view! { <App/> }
         },
     )
 }
