@@ -55,13 +55,13 @@ fn Button(#[prop(default = 1)] increment: i32) -> impl IntoView {
 )]
 enum Animals {
     #[default]
+    Other,
     Dog,
     Cat,
     Rabbit,
     Bird,
 }
 
-use leptos::logging::*;
 #[component]
 fn SelectAnimals() -> impl IntoView {
     let (selected_option, set_selected_option) = create_signal(Animals::default());
@@ -81,14 +81,22 @@ fn SelectAnimals() -> impl IntoView {
         set_selected_option(parsed)
     };
 
+    let selected = move || selected_option().to_string();
+
+    let on_change = move |_| logging::log!("You selected: {}", selected_option());
 
     view! {
         <hr/>
-        <h2>"Select Your Favourite Animal"</h2>
+        <h2>
+            <label for="animals">"Select Your Favourite Animal"</label>
+        </h2>
         <select
+            name="animals"
+            id="favourite_animal"
+            title="Favourite Animal"
             on:input=on_input
-            prop:selected=move || selected_option().to_string()
-            on:change=move |_| logging::log!("You selected: {}", selected_option())
+            prop:selected=selected
+            on:change=on_change
         >
             {options}
         </select>
