@@ -6,6 +6,9 @@ pub fn Modal() -> impl IntoView {
     let (show_inside_overlay, set_show_inside_overlay) = create_signal(false);
 
 
+    let window = web_sys::window().unwrap();
+
+
     view! {
         <div>
             <button id="btn-show" on:click=move |_| set_show_overlay(true)>
@@ -15,7 +18,7 @@ pub fn Modal() -> impl IntoView {
             <Show when=show_overlay fallback=|| ()>
                 <Portal mount=document().get_element_by_id("app").unwrap()>
                     <div class="portal_background">
-                        <dialog class="portal_content" open=show_overlay>
+                        <dialog class="portal_content" open=show_overlay id="dialog">
                             <button id="btn-hide" on:click=move |_| set_show_overlay(false)>
                                 "Close ❌"
                             </button>
