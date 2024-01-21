@@ -15,10 +15,9 @@ pub fn Modal() -> impl IntoView {
     let (show_overlay, set_show_overlay) = create_signal(false);
     let (show_inside_overlay, set_show_inside_overlay) = create_signal(false);
 
-    // add event listener to window
+    // add event listener to window & close modal when clicked outside modal window
     let window = web_sys::window().unwrap();
 
-    // add evt listener to window
     let dialog_ref: NodeRef<Div> = create_node_ref::<Div>();
 
     let handle_click = Closure::wrap(Box::new(move |evt: web_sys::PointerEvent| {
@@ -82,3 +81,4 @@ pub fn Modal() -> impl IntoView {
         </div>
     }
 }
+
