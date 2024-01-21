@@ -1,0 +1,8 @@
+{
+	"rust-analyzer.cargo.buildScripts.overrideCommand": null,
+	"rust-analyzer.rustfmt.overrideCommand": [
+		"leptosfmt",
+		"--stdin",
+		"--rustfmt"
+	]
+}

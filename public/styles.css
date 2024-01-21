@@ -21,11 +21,7 @@ body {
   align-items: center;
 }
 
-.buttons {
-  display: flex;
-  justify-content: space-evenly;
-}
-
+p,
 h1,
 h2,
 h3,
@@ -37,16 +33,51 @@ h6 {
   padding: 2rem;
 }
 
-p,
 button {
   margin: var(--size-6);
 }
 
-body > picture,
-button {
+body > picture {
   display: block;
   margin-left: auto;
   margin-right: auto;
   text-align: center;
   margin: 2rem;
 }
+
+/* Incrementing buttons */
+.buttons {
+  display: flex;
+  justify-content: space-evenly;
+}
+/* End incrementing buttons */
+
+/* Portal Overlay */
+.portal_background {
+  position: fixed;
+  z-index: 10;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.85);
+}
+
+.portal_content {
+  z-index: 20;
+  min-height: 80vh;
+  min-width: 80vw;
+  top: var(--size-8);
+}
+
+#btn-hide {
+  position: absolute;
+  top: var(--size-1);
+  right: var(--size-1);
+}
+
+.portal_body {
+  margin: var(--size-8);
+}
+
+/* END portal overlay */
