@@ -17,7 +17,6 @@ pub fn App() -> impl IntoView {
     provide_meta_context();
 
     view! {
-
         // injects info into HTML tag from application code
         <Html
             lang="en"
@@ -40,18 +39,21 @@ pub fn App() -> impl IntoView {
                 <p>"Errors: "</p>
                 // Render a list of errors as strings - good for development purposes
                 <ul>
-                    {move || errors.get()
-                        .into_iter()
-                        .map(|(_, e)| view! { <li>{e.to_string()}</li>})
-                        .collect_view()
-                    }
+                    {move || {
+                        errors
+                            .get()
+                            .into_iter()
+                            .map(|(_, e)| view! { <li>{e.to_string()}</li> })
+                            .collect_view()
+                    }}
                 </ul>
             }
-        >
+        }>
+  
             <Router>
                 <Routes>
-                    <Route path="/" view=Home />
-                    <Route path="/*" view=NotFound />
+                    <Route path="/" view=Home/>
+                    <Route path="/*" view=NotFound/>
                 </Routes>
             </Router>
 

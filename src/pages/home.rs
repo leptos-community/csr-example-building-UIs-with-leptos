@@ -8,7 +8,7 @@ use leptos::*;
 #[component]
 pub fn Home() -> impl IntoView {
     view! {
-        <div class="container">
+        <div id="home_page" class="container">
 
             <picture>
                 <source
