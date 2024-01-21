@@ -60,6 +60,7 @@ enum Animals {
     Cat,
     Rabbit,
     Bird,
+    Snake,
 }
 
 #[component]
@@ -88,7 +89,7 @@ fn SelectAnimals() -> impl IntoView {
     view! {
         <hr/>
         <h2>
-            <label for="animals">"Select Your Favourite Animal"</label>
+            <label for="favourite_animal">"Select Your Favourite Animal"</label>
         </h2>
         <select
             name="animals"
