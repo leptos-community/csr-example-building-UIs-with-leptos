@@ -5,6 +5,7 @@ pub fn Modal() -> impl IntoView {
     let (show_overlay, set_show_overlay) = create_signal(false);
     let (show_inside_overlay, set_show_inside_overlay) = create_signal(false);
 
+
     view! {
         <div>
             <button id="btn-show" on:click=move |_| set_show_overlay(true)>
@@ -21,7 +22,7 @@ pub fn Modal() -> impl IntoView {
 
                             <aside class="portal_body">
 
-                                <p>"This is in the portal (modal's) body element"</p>
+                                <p>"This is in the modal's (portal) body element"</p>
 
                                 <button
                                     id="btn-toggle"
