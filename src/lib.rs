@@ -9,7 +9,7 @@ mod pages;
 use crate::pages::home::Home;
 use crate::pages::not_found::NotFound;
 
-/// A router which renders the homepage and handles 404's
+/// An app router which renders the homepage and handles 404's
 #[component]
 pub fn App() -> impl IntoView {
     // Provides context that manages stylesheets, titles, meta tags, etc.
@@ -34,6 +34,8 @@ pub fn App() -> impl IntoView {
 
         <ErrorBoundary
             fallback=|errors| view! {
+                <h1>"Uh oh! Something went wrong!"</h1>
+
                 <p>"Errors: "</p>
                 // Render a list of errors as strings - good for development purposes
                 <ul>

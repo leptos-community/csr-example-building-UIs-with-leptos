@@ -15,8 +15,8 @@ log = "0.4"
 console_error_panic_hook = "0.1.7"
 
 # utils
-strum = { version = "0.25.0", features = ["derive", "strum_macros"] }
-strum_macros = "0.25.3"
+strum = { version = "0.25", features = ["derive", "strum_macros"] }
+strum_macros = "0.25"
 
 
 [dev-dependencies]
