@@ -30,6 +30,7 @@ console_error_panic_hook = "0.1.7"
 # utils
 strum = { version = "0.25", features = ["derive", "strum_macros"] }
 strum_macros = "0.25"
+cfg-if = "1.0.0"
 
 
 [dev-dependencies]
@@ -40,6 +41,8 @@ web-sys = { version = "0.3", features = [
 	"Window",
 	"Node",
 	"Element",
+	"EventTarget",
+	"PointerEvent",
 ] }
 
 
