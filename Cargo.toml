@@ -8,17 +8,17 @@ authors = ["Diversable <dan.mantei@outlook.com>"]
 
 [dependencies]
 # leptos = { version = "0.5", features = ["csr", "nightly"] }
-leptos = { git = "https://github.com/leptos-rs/leptos/", tag = "v0.6.0-beta", features = [
+leptos = { git = "https://github.com/leptos-rs/leptos/", tag = "v0.5.7", features = [
 	"csr",
 	"nightly",
 ] }
 # leptos_meta = { version = "0.5", features = ["csr", "nightly"] }
-leptos_meta = { git = "https://github.com/leptos-rs/leptos/", tag = "v0.6.0-beta", features = [
+leptos_meta = { git = "https://github.com/leptos-rs/leptos/", tag = "v0.5.7", features = [
 	"csr",
 	"nightly",
 ] }
 # leptos_router = { version = "0.5", features = ["csr", "nightly"] }
-leptos_router = { git = "https://github.com/leptos-rs/leptos/", tag = "v0.6.0-beta", features = [
+leptos_router = { git = "https://github.com/leptos-rs/leptos/", tag = "v0.5.7", features = [
 	"csr",
 	"nightly",
 ] }

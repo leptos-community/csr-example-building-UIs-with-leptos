@@ -1,5 +1,7 @@
 use crate::components::favourite_animal::SelectAnimal;
 use crate::components::incr_button::IncrButton;
+use crate::components::portal::Overlay;
+
 use leptos::*;
 
 /// Default Home Page
@@ -21,6 +23,8 @@ pub fn Home() -> impl IntoView {
             </div>
 
             <SelectAnimal />
+
+            <Overlay />
 
         </div>
     }
