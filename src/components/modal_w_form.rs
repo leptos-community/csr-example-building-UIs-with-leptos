@@ -1,5 +1,5 @@
 use cfg_if::cfg_if;
-use leptos::html::Div;
+use leptos::html::{dialog, Div};
 use leptos::*;
 
 cfg_if! {
@@ -9,12 +9,20 @@ cfg_if! {
     }
 }
 
+#[derive(Debug, Clone)]
+enum Email {
+    Good,
+    Bad,
+}
+
 
 #[component]
 pub fn Modal() -> impl IntoView {
     let (show_overlay, set_show_overlay) = create_signal(false);
     let (show_inside_overlay, set_show_inside_overlay) = create_signal(false);
 
+    let (email_addr, set_email_addr) = create_signal("".to_string());
+    let (check_email, set_check_email) = create_signal(Email::Bad);
 
     // add event listener to window & close modal when clicked outside modal window
     let window = web_sys::window().unwrap();
@@ -33,7 +41,7 @@ pub fn Modal() -> impl IntoView {
                 // --- NB: DELETE ME! ---
                 logging::log!("Clicked outside modal; closing modal");
                 // --- ---
-                set_show_overlay(false);
+                // set_show_overlay(false);
             }
         }
     }) as Box<dyn FnMut(_)>);
@@ -79,6 +87,25 @@ pub fn Modal() -> impl IntoView {
                                     </Show>
 
                                     <p>"More contents..."</p>
+
+                                    <form method="dialog">
+                                        <label for="email">"Please enter your email address"</label>
+                                        <br/>
+                                        <input
+                                            name="email"
+                                            id="email"
+                                            type="email"
+                                            on:input=move |evt| {
+                                                set_email_addr(event_target_value(&evt));
+                                            }
+                                        />
+
+                                        // <span>{move || check_email.get()}</span>
+                                        <br/>
+                                        <button on:click=move |_| set_show_overlay(
+                                            false,
+                                        )>"Submit"</button>
+                                    </form>
                                 </aside>
                             </div>
 
