@@ -52,8 +52,8 @@ body > picture {
 }
 /* End incrementing buttons */
 
-/* Portal Overlay */
-.portal_background {
+/* Modal (Portal Overlay) */
+.modal_background {
   position: fixed;
   z-index: 10;
   width: 100vw;
@@ -63,7 +63,7 @@ body > picture {
   background: rgba(0, 0, 0, 0.85);
 }
 
-.portal_content {
+.modal_content {
   z-index: 20;
   min-height: 80vh;
   min-width: 80vw;
@@ -76,8 +76,8 @@ body > picture {
   right: var(--size-1);
 }
 
-.portal_body {
+.modal_body {
   margin: var(--size-8);
 }
 
-/* END portal overlay */
+/* END modal (portal overlay) */
