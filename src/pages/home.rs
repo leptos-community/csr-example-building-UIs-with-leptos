@@ -1,6 +1,7 @@
 use crate::components::favourite_animal::SelectAnimal;
 use crate::components::incr_button::IncrButton;
 use crate::components::modal::Modal;
+use crate::components::modal_form::FormModal;
 
 use leptos::*;
 
@@ -33,6 +34,8 @@ pub fn Home() -> impl IntoView {
             <SelectAnimal/>
 
             <Modal/>
+
+        // <FormModal/>
 
         </div>
     }
