@@ -1,7 +1,7 @@
-use crate::components::favourite_animal::SelectAnimal;
 use crate::components::incr_button::IncrButton;
 use crate::components::modal::Modal;
 use crate::components::modal_form::FormModal;
+use crate::components::select_dropdown::SelectAnimal;
 
 use leptos::*;
 

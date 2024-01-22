@@ -1,4 +1,3 @@
-// use cfg_if::cfg_if;
 use std::convert::Into;
 
 use leptos::html::Div;
@@ -81,19 +80,18 @@ fn ModalBody() -> impl IntoView {
 }
 
 
-// Option 1: handle keyboard "Escape" key press to dismiss modal
+// Other Option: handle keyboard "Escape" key press to dismiss modal
 // let window = web_sys::window().unwrap();
 
 // let handle_click = Closure::wrap(Box::new(move |event: web_sys::KeyboardEvent| {
 //     if event.key() == "Escape" {
-//         logging::log!("escape key was pressed!")
+//         set_show_modal(false);
 //     }
 // }) as Box<dyn FnMut(_)>);
 
 // let handle_click = move |ev: web_sys::KeyboardEvent| {
-//     logging::log!("ev.key: {}", ev.key());
 //     if ev.key() == "Escape" {
-//         logging::log!("escape key was pressed!")
+//         set_show_modal(false);
 //     }
 // };
 
