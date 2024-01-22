@@ -2,58 +2,57 @@
 use leptos::html::Div;
 use leptos::*;
 
-use wasm_bindgen::closure::Closure;
-
 use leptos_use::on_click_outside;
 
 use regex_lite::Regex;
-use wasm_bindgen::JsCast;
 
 
 #[component]
 pub fn FormModal() -> impl IntoView {
-    // --- Set Up Modal (with click outside to dismiss behaviour) ---
-    let (show_overlay, set_show_overlay) = create_signal(false);
+    // --- Set Up Modal (with 'click outside modal to dismiss' behaviour) ---
+    let (show_modal, set_show_modal) = create_signal(false);
 
-    // add event listener to window & close modal when clicked outside modal window
+
+    // Dismiss modal when "Escape" (or 'q') key is pressed
+    let dismiss_modal_with_keyboard = window_event_listener(ev::keypress, move |ev| {
+        if ev.key() == "Escape" || ev.key() == "q" || ev.key() == "Q" {
+            logging::log!("You tried to escape the modal!");
+            set_show_modal(false);
+        }
+
+        logging::log!("ev.key: {}", ev.key());
+        logging::log!("ev.code: {}", ev.code());
+        logging::log!("ev.key_code: {}", ev.key_code());
+    });
+    on_cleanup(move || dismiss_modal_with_keyboard.remove());
+
+
+    // use `Leptos-Use` to setup modal 'click outside modal to dismiss' behaviour
     let modal_target: NodeRef<Div> = create_node_ref::<Div>();
     on_cleanup(on_click_outside(modal_target, move |_| {
-        set_show_overlay(false)
+        set_show_modal(false)
     }));
-
-    // handle keyboard "Escape" key press to dismiss modal
-    let window = web_sys::window().unwrap();
-
-    let handle_click = Closure::wrap(Box::new(move |event: web_sys::KeyboardEvent| {
-        if event.location() == 27 {
-            logging::log!("escape key was pressed!")
-        }
-    }) as Box<dyn FnMut(_)>);
-
-    window
-        .add_event_listener_with_callback("keydown", handle_click.as_ref().unchecked_ref())
-        .expect("problem window evt listener");
 
     // --- End Modal Setup ---
 
 
     view! {
-        <button id="btn-show" on:click=move |_| set_show_overlay(true)>
+        <button id="btn-show" on:click=move |_| set_show_modal(true)>
             "Show Form Modal"
         </button>
 
-        <Show when=show_overlay fallback=|| ()>
+        <Show when=show_modal fallback=|| ()>
             <Portal mount=document().get_element_by_id("app").unwrap()>
                 <div class="portal_background">
                     <div _ref=modal_target>
-                        <dialog class="portal_content" open=show_overlay>
+                        <dialog class="portal_content" open=show_modal>
 
                             <div>
-                                <button id="btn-hide" on:click=move |_| set_show_overlay(false)>
+                                <button id="btn-hide" on:click=move |_| set_show_modal(false)>
                                     "Close ❌"
                                 </button>
 
-                                <ModalBody set_show_overlay/>
+                                <ModalBody set_show_modal/>
 
                             </div>
 
@@ -66,7 +65,7 @@ pub fn FormModal() -> impl IntoView {
 }
 
 #[component]
-fn ModalBody(set_show_overlay: WriteSignal<bool>) -> impl IntoView {
+fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
     // --- Modal Body ---
     let (show_inside_overlay, set_show_inside_overlay) = create_signal(false);
 
@@ -131,7 +130,7 @@ fn ModalBody(set_show_overlay: WriteSignal<bool>) -> impl IntoView {
                 </span>
 
                 <br/>
-                <button on:click=move |_| set_show_overlay(false)>"Submit"</button>
+                <button on:click=move |_| set_show_modal(false)>"Submit"</button>
             </form>
         </aside>
     }
