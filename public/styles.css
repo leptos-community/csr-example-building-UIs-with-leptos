@@ -30,7 +30,7 @@ h5,
 h6 {
   text-align: center;
   margin: 0 auto;
-  padding: 2rem;
+  padding: var(--size-4) var(--size-6);
 }
 
 button {
@@ -45,7 +45,7 @@ body > picture {
   margin: 2rem;
 }
 
-/* Incrementing buttons */
+/* Incrementing buttons horizontal layout */
 .buttons {
   display: flex;
   justify-content: space-evenly;
