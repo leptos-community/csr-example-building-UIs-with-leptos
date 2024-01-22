@@ -35,7 +35,7 @@ pub fn Home() -> impl IntoView {
 
             <Modal/>
 
-        // <FormModal/>
+            <FormModal/>
 
         </div>
     }
