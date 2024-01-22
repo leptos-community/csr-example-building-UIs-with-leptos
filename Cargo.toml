@@ -7,110 +7,106 @@ authors = ["Diversable <dan.mantei@outlook.com>"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+# Leptos framework
 leptos = { version = "0.5", features = ["csr", "nightly"] }
-# leptos = { git = "https://github.com/leptos-rs/leptos/", tag = "v0.5.7", features = [
-# 	"csr",
-# 	"nightly",
-# ] }
 leptos_meta = { version = "0.5", features = ["csr", "nightly"] }
-# leptos_meta = { git = "https://github.com/leptos-rs/leptos/", tag = "v0.5.7", features = [
-# 	"csr",
-# 	"nightly",
-# ] }
 leptos_router = { version = "0.5", features = ["csr", "nightly"] }
-# leptos_router = { git = "https://github.com/leptos-rs/leptos/", tag = "v0.5.7", features = [
-# 	"csr",
-# 	"nightly",
-# ] }
 
+# set up logging
 console_log = "1"
 log = "0.4"
 console_error_panic_hook = "0.1.7"
 
 # utils
 leptos-use = "0.9"
-cfg-if = "1.0"
 strum = { version = "0.25", features = ["derive", "strum_macros"] }
 strum_macros = "0.25"
+# cfg-if = "1.0"
 
-wasm-bindgen = "0.2"
-wasm-bindgen-futures = "0.4"
-gloo-timers = { version = "0.3", features = ["futures"] }
-gloo-utils = { version = "0.2" }
-js-sys = "0.3"
+regex-lite = "0.1"
+
+# WASM ecosystem crates
 web-sys = { version = "0.3", features = [
-	# "Document",
-	# "Window",
-	# "Node",
-	# "Element",
-	# "Event",
-	# "EventTarget",
-	# "PointerEvent",
-	"AddEventListenerOptions",
-	"BinaryType",
-	"Coordinates",
-	"CloseEvent",
-	"CssStyleDeclaration",
-	"CustomEvent",
-	"CustomEventInit",
-	"DisplayMediaStreamConstraints",
-	"DomRect",
-	"DomRectReadOnly",
-	"DataTransfer",
-	"DragEvent",
-	"Element",
-	"EventListener",
-	"EventListenerOptions",
-	"EventTarget",
-	"File",
-	"FileList",
-	"Geolocation",
-	"HtmlElement",
-	"HtmlLinkElement",
-	"HtmlStyleElement",
-	"IntersectionObserver",
-	"IntersectionObserverInit",
-	"IntersectionObserverEntry",
-	"MediaDevices",
-	"MediaQueryList",
-	"MediaStream",
-	"MediaStreamTrack",
-	"MouseEvent",
-	"MutationObserver",
-	"MutationObserverInit",
-	"MutationRecord",
-	"Navigator",
-	"NodeList",
-	"Notification",
-	"NotificationDirection",
-	"NotificationOptions",
-	"NotificationPermission",
-	"PointerEvent",
-	"Position",
-	"PositionError",
-	"PositionOptions",
-	"ResizeObserver",
-	"ResizeObserverBoxOptions",
-	"ResizeObserverEntry",
-	"ResizeObserverOptions",
-	"ResizeObserverSize",
-	"ScrollBehavior",
-	"ScrollToOptions",
-	"ServiceWorker",
-	"ServiceWorkerContainer",
-	"ServiceWorkerRegistration",
-	"ServiceWorkerState",
-	"Storage",
-	"StorageEvent",
-	"Touch",
-	"TouchEvent",
-	"TouchList",
-	"VisibilityState",
-	"WebSocket",
+	"Document",
 	"Window",
+	"Node",
+	"Element",
+	"Event",
+	"EventTarget",
+	"PointerEvent",
+
+	# "AddEventListenerOptions",
+	# "BinaryType",
+	# "Coordinates",
+	# "CloseEvent",
+	# "CssStyleDeclaration",
+	# "CustomEvent",
+	# "CustomEventInit",
+	# "DisplayMediaStreamConstraints",
+	# "DomRect",
+	# "DomRectReadOnly",
+	# "DataTransfer",
+	# "DragEvent",
+	# "Element",
+	# "EventListener",
+	# "EventListenerOptions",
+	# "EventTarget",
+	# "File",
+	# "FileList",
+	# "Geolocation",
+	# "HtmlElement",
+	# "HtmlLinkElement",
+	# "HtmlStyleElement",
+	# "IntersectionObserver",
+	# "IntersectionObserverInit",
+	# "IntersectionObserverEntry",
+	# "MediaDevices",
+	# "MediaQueryList",
+	# "MediaStream",
+	# "MediaStreamTrack",
+	# "MouseEvent",
+	# "MutationObserver",
+	# "MutationObserverInit",
+	# "MutationRecord",
+	# "Navigator",
+	# "NodeList",
+	# "Notification",
+	# "NotificationDirection",
+	# "NotificationOptions",
+	# "NotificationPermission",
+	# "PointerEvent",
+	# "Position",
+	# "PositionError",
+	# "PositionOptions",
+	# "ResizeObserver",
+	# "ResizeObserverBoxOptions",
+	# "ResizeObserverEntry",
+	# "ResizeObserverOptions",
+	# "ResizeObserverSize",
+	# "ScrollBehavior",
+	# "ScrollToOptions",
+	# "ServiceWorker",
+	# "ServiceWorkerContainer",
+	# "ServiceWorkerRegistration",
+	# "ServiceWorkerState",
+	# "Storage",
+	# "StorageEvent",
+	# "Touch",
+	# "TouchEvent",
+	# "TouchList",
+	# "VisibilityState",
+	# "WebSocket",
+	# "Window",
+
 ] }
-default-struct-builder = "0.5"
-regex-lite = "0.1.5"
+# wasm-bindgen = "0.2"
+# wasm-bindgen-futures = "0.4"
+# gloo-timers = { version = "0.3", features = ["futures"] }
+# gloo-utils = { version = "0.2" }
+# js-sys = "0.3"
+
+# Serialization / Deserialization
+# serde = { version = "1.0.195", features = ["derive"] }
 
 
 [dev-dependencies]

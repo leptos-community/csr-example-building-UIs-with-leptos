@@ -1,4 +1,3 @@
-// use cfg_if::cfg_if;
 use std::convert::Into;
 
 use leptos::html::Div;
@@ -14,15 +13,10 @@ pub fn Modal() -> impl IntoView {
 
 
     // Dismiss modal when "Escape" (or 'q') key is pressed
-    let dismiss_modal_with_keyboard = window_event_listener(ev::keypress, move |ev| {
+    let dismiss_modal_with_keyboard = window_event_listener(ev::keydown, move |ev| {
         if ev.key() == "Escape" || ev.key() == "q" || ev.key() == "Q" {
-            logging::log!("You tried to escape the modal!");
             set_show_modal(false);
         }
-
-        logging::log!("ev.key: {}", ev.key());
-        logging::log!("ev.code: {}", ev.code());
-        logging::log!("ev.key_code: {}", ev.key_code());
     });
     on_cleanup(move || dismiss_modal_with_keyboard.remove());
 
@@ -64,22 +58,19 @@ pub fn Modal() -> impl IntoView {
 #[component]
 fn ModalBody() -> impl IntoView {
     // --- Modal Body ---
-    let (show_inside_overlay, set_show_inside_overlay) = create_signal(false);
+    let (contents_hidden, set_contents_hidden) = create_signal(false);
     // --- End Modal Body ---
     view! {
         <aside class="modal_body">
 
             <p>"This is in the modal's (portal) body"</p>
 
-            <button
-                id="btn-toggle"
-                on:click=move |_| set_show_inside_overlay(!show_inside_overlay())
-            >
+            <button id="btn-toggle" on:click=move |_| set_contents_hidden(!contents_hidden())>
 
                 "Toggle modal content"
             </button>
 
-            <Show when=show_inside_overlay fallback=|| view! { "Hidden" }>
+            <Show when=contents_hidden fallback=|| view! { "Hidden" }>
                 "Visible"
             </Show>
 
@@ -89,22 +80,21 @@ fn ModalBody() -> impl IntoView {
 }
 
 
-// Option 1: handle keyboard "Escape" key press to dismiss modal
+// Other Option: handle keyboard "Escape" key press to dismiss modal
 // let window = web_sys::window().unwrap();
 
 // let handle_click = Closure::wrap(Box::new(move |event: web_sys::KeyboardEvent| {
 //     if event.key() == "Escape" {
-//         logging::log!("escape key was pressed!")
+//         set_show_modal(false);
 //     }
 // }) as Box<dyn FnMut(_)>);
 
-// let handle_click = move |evt: web_sys::KeyboardEvent| {
-//     logging::log!("ev.key: {}", evt.key());
-//     if evt.key() == "Escape" {
-//         logging::log!("escape key was pressed!")
+// let handle_click = move |ev: web_sys::KeyboardEvent| {
+//     if ev.key() == "Escape" {
+//         set_show_modal(false);
 //     }
 // };
 
 // window
-//     .add_event_listener_with_callback("keydown", handle_click(event_target(evt)))
+//     .add_event_listener_with_callback("keydown", handle_click(...))
 //     .expect("problem window evt listener");

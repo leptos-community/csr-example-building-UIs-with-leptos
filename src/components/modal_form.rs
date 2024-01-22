@@ -14,15 +14,10 @@ pub fn FormModal() -> impl IntoView {
 
 
     // Dismiss modal when "Escape" (or 'q') key is pressed
-    let dismiss_modal_with_keyboard = window_event_listener(ev::keypress, move |ev| {
+    let dismiss_modal_with_keyboard = window_event_listener(ev::keydown, move |ev| {
         if ev.key() == "Escape" || ev.key() == "q" || ev.key() == "Q" {
-            logging::log!("You tried to escape the modal!");
             set_show_modal(false);
         }
-
-        logging::log!("ev.key: {}", ev.key());
-        logging::log!("ev.code: {}", ev.code());
-        logging::log!("ev.key_code: {}", ev.key_code());
     });
     on_cleanup(move || dismiss_modal_with_keyboard.remove());
 
@@ -43,9 +38,9 @@ pub fn FormModal() -> impl IntoView {
 
         <Show when=show_modal fallback=|| ()>
             <Portal mount=document().get_element_by_id("app").unwrap()>
-                <div class="portal_background">
+                <div class="modal_background">
                     <div _ref=modal_target>
-                        <dialog class="portal_content" open=show_modal>
+                        <dialog class="modal_content" open=show_modal>
 
                             <div>
                                 <button id="btn-hide" on:click=move |_| set_show_modal(false)>
@@ -64,43 +59,44 @@ pub fn FormModal() -> impl IntoView {
     }
 }
 
+
 #[component]
 fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
     // --- Modal Body ---
-    let (show_inside_overlay, set_show_inside_overlay) = create_signal(false);
+    let (contents_hidden, set_contents_hidden) = create_signal(false);
 
 
-    // --- email address form ---
+    // --- email address form, with email address checked by regex_lite ---
     let (email_addr, set_email_addr) = create_signal("".to_string());
-    // Update email addr field
+
+    // Update email addr form field
     let on_input = move |evt| {
         set_email_addr(event_target_value(&evt));
     };
 
-    // Regex for checking email addresses
-    let regex = move || Regex::new(r"^[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$").unwrap();
+    // test if email addr conforms
+    let check_email_resource =
+        create_resource(
+            email_addr,
+            |val| async move { check_email_regex(val).await },
+        );
 
+    let is_email_good = move || check_email_resource.get().unwrap_or_else(|| false);
 
-    // let input: &'static str = format!("{}", email_addr()).as_str();
+    // --- END email address form ---
 
-    let email_is_good = move || regex().is_match(email_addr().as_str());
-
-    let (check_email, _set_check_email) = create_signal(email_is_good());
 
     view! {
-        <aside class="portal_body">
+        <aside class="modal_body">
 
             <p>"This is in the modal's (portal) body element"</p>
 
-            <button
-                id="btn-toggle"
-                on:click=move |_| set_show_inside_overlay(!show_inside_overlay())
-            >
+            <button id="btn-toggle" on:click=move |_| set_contents_hidden(!contents_hidden())>
 
                 "Toggle modal content"
             </button>
 
-            <Show when=show_inside_overlay fallback=|| view! { "Hidden" }>
+            <Show when=contents_hidden fallback=|| view! { "Hidden" }>
                 "Visible"
             </Show>
 
@@ -118,20 +114,34 @@ fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
                     on:input=on_input
                 />
 
-                <span>
-                    {move || {
-                        if check_email() {
-                            format!(" {}", "✅".to_string())
-                        } else {
-                            format!(" {}", "❌".to_string())
-                        }
-                    }}
+                <Transition fallback=|| view! { format!("{}", "🤔".to_string()) }>
 
-                </span>
+                    <span>
+                        {move || {
+                            if is_email_good() {
+                                format!(" {}", "✅".to_string())
+                            } else {
+                                format!(" {}", "❌".to_string())
+                            }
+                        }}
+
+                    </span>
+
+                </Transition>
 
                 <br/>
                 <button on:click=move |_| set_show_modal(false)>"Submit"</button>
             </form>
         </aside>
     }
+}
+
+
+async fn check_email_regex(email_addr: String) -> bool {
+    // Regex for checking email addresses
+    let email_regex: Regex =
+        Regex::new(r"^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$").unwrap();
+
+    // test email conforms
+    email_regex.is_match(&email_addr)
 }
