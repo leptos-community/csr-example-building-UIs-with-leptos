@@ -118,4 +118,4 @@ fn ModalBody() -> impl IntoView {
 //     .add_event_listener_with_callback("keydown", handle_click(event_target(evt)))
 //     .expect("problem window evt listener");
 
-// Option 2: handle keyboard "Escape" keypress to dismiss modal
+
