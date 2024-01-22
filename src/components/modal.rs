@@ -4,17 +4,8 @@ use std::convert::Into;
 use leptos::html::Div;
 use leptos::*;
 
-use wasm_bindgen::closure::Closure;
-
 use leptos_use::on_click_outside;
-use web_sys::KeyboardEvent;
 
-
-async fn noop(ev: KeyboardEvent) -> String {
-    logging::log!("You tried to escape the modal!");
-    logging::log!("evt: {:?}", ev);
-    "it worked".to_string()
-}
 
 #[component]
 pub fn Modal() -> impl IntoView {
@@ -117,5 +108,3 @@ fn ModalBody() -> impl IntoView {
 // window
 //     .add_event_listener_with_callback("keydown", handle_click(event_target(evt)))
 //     .expect("problem window evt listener");
-
-
