@@ -22,32 +22,35 @@ files = [{ source = "dist", destination = "/" }]
 # Set up "examples" page routing
 [[trigger.http]]
 route = "/examples/..."
-component = "examples-page"
+# component = "examples-page"
+component = "csr-examples"
 
-[component.examples-page]
-source = { url = "https://github.com/fermyon/spin-fileserver/releases/download/v0.2.1/spin_static_fs.wasm", digest = "sha256:5f05b15f0f7cd353d390bc5ebffec7fe25c6a6d7a05b9366c86dcb1a346e9f0f" }
-files = [{ source = "dist", destination = "/" }]
+# [component.examples-page]
+# source = { url = "https://github.com/fermyon/spin-fileserver/releases/download/v0.2.1/spin_static_fs.wasm", digest = "sha256:5f05b15f0f7cd353d390bc5ebffec7fe25c6a6d7a05b9366c86dcb1a346e9f0f" }
+# files = [{ source = "dist", destination = "/" }]
 
 
 # Set up "contact" page routing
 [[trigger.http]]
 route = "/contact/..."
-component = "contact-page"
+# component = "contact-page"
+component = "csr-examples"
 
-[component.contact-page]
-source = { url = "https://github.com/fermyon/spin-fileserver/releases/download/v0.2.1/spin_static_fs.wasm", digest = "sha256:5f05b15f0f7cd353d390bc5ebffec7fe25c6a6d7a05b9366c86dcb1a346e9f0f" }
-files = [{ source = "dist", destination = "/" }]
+# [component.contact-page]
+# source = { url = "https://github.com/fermyon/spin-fileserver/releases/download/v0.2.1/spin_static_fs.wasm", digest = "sha256:5f05b15f0f7cd353d390bc5ebffec7fe25c6a6d7a05b9366c86dcb1a346e9f0f" }
+# files = [{ source = "dist", destination = "/" }]
 
 
 # Handle 404 not-found
 # --- (not working) ---
 [[trigger.http]]
 route = "/*any/..."
-component = "not-found"
+# component = "not-found"
+component = "csr-examples"
 
-[component.not-found]
-source = { url = "https://github.com/fermyon/spin-fileserver/releases/download/v0.2.1/spin_static_fs.wasm", digest = "sha256:5f05b15f0f7cd353d390bc5ebffec7fe25c6a6d7a05b9366c86dcb1a346e9f0f" }
-files = [{ source = "dist", destination = "/" }]
+# [component.not-found]
+# source = { url = "https://github.com/fermyon/spin-fileserver/releases/download/v0.2.1/spin_static_fs.wasm", digest = "sha256:5f05b15f0f7cd353d390bc5ebffec7fe25c6a6d7a05b9366c86dcb1a346e9f0f" }
+# files = [{ source = "dist", destination = "/" }]
 
 
 # Basic API to interact with from the client
@@ -58,6 +61,7 @@ component = "api"
 [component.api]
 source = "api/target/wasm32-wasi/release/api.wasm"
 allowed_outbound_hosts = []
+
 [component.api.build]
 command = "cargo build --target wasm32-wasi --release"
 workdir = "api"
