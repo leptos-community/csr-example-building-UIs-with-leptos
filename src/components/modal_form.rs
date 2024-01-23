@@ -34,7 +34,7 @@ pub fn FormModal() -> impl IntoView {
 
     view! {
         <button id="btn-show" on:click=move |_| set_show_modal(true)>
-            "Show Form Modal"
+            "Contact Us"
         </button>
 
         <Show when=show_modal fallback=|| ()>
