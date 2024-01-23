@@ -109,14 +109,16 @@ button {
 
 /* --- END Nav Bar --- */
 
+/* --- container around every page --- */
 .page_container {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
 }
+/* --- --- */
 
-/* --- Home page --- */
+/* --- Home page - main content --- */
 body > picture {
   display: block;
   margin-left: auto;
@@ -128,7 +130,6 @@ body > picture {
 .welcome {
   color: var(--brand);
 }
-/* --- END home page --- */
 
 /* Incrementing buttons horizontal layout */
 .buttons {
@@ -136,6 +137,8 @@ body > picture {
   justify-content: space-evenly;
 }
 /* End incrementing buttons */
+
+/* --- END home page --- */
 
 /* Modal (Portal Overlay) */
 .modal_background {

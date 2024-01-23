@@ -67,12 +67,14 @@ pub fn App() -> impl IntoView {
 
                 <Router>
                     <nav class="main_nav">
-                        <img
-                            src="leptos_logo.png"
-                            alt="A logo for the Leptos fullstack Rust web framework"
-                            height="75"
-                            width="75"
-                        />
+                        <A href="">
+                            <img
+                                src="leptos_logo.png"
+                                alt="A logo for the Leptos fullstack Rust web framework"
+                                height="75"
+                                width="75"
+                            />
+                        </A>
 
                         <div>
                             <A href="">"Home"</A>
@@ -85,7 +87,7 @@ pub fn App() -> impl IntoView {
 
                     </nav>
 
-                    <main>
+                    <main class="page_container">
                         <Routes>
                             <Route path="/" view=Home/>
                             <Route path="/examples" view=Examples/>

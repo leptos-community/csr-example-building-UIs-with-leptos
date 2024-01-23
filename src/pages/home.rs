@@ -7,7 +7,7 @@ use leptos::*;
 #[component]
 pub fn Home() -> impl IntoView {
     view! {
-        <div class="page_container">
+        <>
 
             <picture>
                 <source
@@ -28,7 +28,6 @@ pub fn Home() -> impl IntoView {
                 <IncrButton/>
                 <IncrButton increment=5/>
             </div>
-
-        </div>
+        </>
     }
 }
