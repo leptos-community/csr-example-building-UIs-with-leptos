@@ -1,0 +1,94 @@
+# For setup instructions needed for Fermyon Cloud, see:
+# https://developer.fermyon.com/cloud/github-actions
+
+
+# For the Fermyon gh actions themselves, see:
+# https://github.com/fermyon/actions
+
+# Specifically:
+# https://github.com/fermyon/actions?tab=readme-ov-file#deploy-preview-of-spin-app-to-fermyon-cloud---fermyonactionsspinpreviewv1
+
+name: Preview on Spin Cloud
+
+on:
+  pull_request:
+    branches: ["main", "v*"]
+    types: ['opened', 'synchronize', 'reopened', 'closed']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+concurrency:
+  group: "spin"
+  cancel-in-progress: false
+
+jobs:
+  Spin-Preview:
+
+    timeout-minutes: 10
+
+    environment:
+      name: preview
+      url: ${{ steps.preview.outputs.app-url }}
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4 # repo checkout
+
+      # Install Rust Nightly Toolchain, with Clippy & Rustfmt
+      - name: Install nightly Rust
+        uses: dtolnay/rust-toolchain@nightly
+        with:
+          components: clippy, rustfmt
+
+      - name: Add WASM & WASI targets
+        run: rustup target add wasm32-unknown-unknown && rustup target add wasm32-wasi
+
+      - name: lint
+        run: cargo clippy & cargo fmt
+
+
+      # If using tailwind...
+      # - name: Download and install tailwindcss binary
+      #   run: npm install -D tailwindcss && npx tailwindcss -i <INPUT/PATH.css> -o <OUTPUT/PATH.css>  # run tailwind
+
+
+      - name: Download and install Trunk binary
+        run: wget -qO- https://github.com/trunk-rs/trunk/releases/download/v0.18.2/trunk-x86_64-unknown-linux-gnu.tar.gz | tar -xzf-
+
+
+      - name: Build with Trunk
+        run: ./trunk build --release
+
+
+      # Install Spin CLI & Deploy
+
+      - name: Setup Spin
+        uses: fermyon/actions/spin/setup@v1
+        # with:
+          # plugins:
+
+
+      - name: Build and preview
+        id: preview
+        uses: fermyon/actions/spin/preview@v1
+        with:
+          fermyon_token: ${{ secrets.FERMYON_CLOUD_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          undeploy: ${{ github.event.pull_request && github.event.action == 'closed' }}
+          # key_values: |-
+            # abc=xyz
+            # foo=bar
+          # variables: |-
+            # password=${{ secrets.SECURE_PASSWORD }}
+            # apikey=${{ secrets.API_KEY }}
+
+
+      - name: Display Deployed URL
+        run: |
+          echo "Deployed app URL: ${{ steps.preview.outputs.app-url }}" >> $GITHUB_STEP_SUMMARY
