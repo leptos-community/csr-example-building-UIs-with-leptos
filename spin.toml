@@ -6,24 +6,17 @@ version = "0.1.0"
 authors = ["Diversable <dan.mantei@outlook.com>"]
 description = "deploy Leptos CSR examples with Spin"
 
+# Set up "home" (root) page routing
 [[trigger.http]]
 route = "/..."
 component = "csr-examples"
-
-# [component.csr-examples.build]
-# command = "trunk build --release"
-# watch = ["src/**/*.rs", "Cargo.toml"]
-
-[component.csr-examples]
-source = { url = "https://github.com/fermyon/spin-fileserver/releases/download/v0.2.1/spin_static_fs.wasm", digest = "sha256:96c76d9af86420b39eb6cd7be5550e3cb5d4cc4de572ce0fd1f6a29471536cb4" }
-files = [{ source = "dist", destination = "/" }]
 
 
 # Set up "examples" page routing
 [[trigger.http]]
 route = "/examples/..."
-# component = "examples-page"
 component = "csr-examples"
+# component = "examples-page"
 
 # [component.examples-page]
 # source = { url = "https://github.com/fermyon/spin-fileserver/releases/download/v0.2.1/spin_static_fs.wasm", digest = "sha256:5f05b15f0f7cd353d390bc5ebffec7fe25c6a6d7a05b9366c86dcb1a346e9f0f" }
@@ -33,8 +26,8 @@ component = "csr-examples"
 # Set up "contact" page routing
 [[trigger.http]]
 route = "/contact/..."
-# component = "contact-page"
 component = "csr-examples"
+# component = "contact-page"
 
 # [component.contact-page]
 # source = { url = "https://github.com/fermyon/spin-fileserver/releases/download/v0.2.1/spin_static_fs.wasm", digest = "sha256:5f05b15f0f7cd353d390bc5ebffec7fe25c6a6d7a05b9366c86dcb1a346e9f0f" }
@@ -45,12 +38,21 @@ component = "csr-examples"
 # --- (not working) ---
 [[trigger.http]]
 route = "/*any/..."
-# component = "not-found"
 component = "csr-examples"
+# component = "not-found"
 
 # [component.not-found]
 # source = { url = "https://github.com/fermyon/spin-fileserver/releases/download/v0.2.1/spin_static_fs.wasm", digest = "sha256:5f05b15f0f7cd353d390bc5ebffec7fe25c6a6d7a05b9366c86dcb1a346e9f0f" }
 # files = [{ source = "dist", destination = "/" }]
+
+
+# [component.csr-examples.build]
+# command = "trunk build --release"
+# watch = ["src/**/*.rs", "Cargo.toml"]
+
+[component.csr-examples]
+source = { url = "https://github.com/fermyon/spin-fileserver/releases/download/v0.2.1/spin_static_fs.wasm", digest = "sha256:96c76d9af86420b39eb6cd7be5550e3cb5d4cc4de572ce0fd1f6a29471536cb4" }
+files = [{ source = "dist", destination = "/" }]
 
 
 # Basic API to interact with from the client
