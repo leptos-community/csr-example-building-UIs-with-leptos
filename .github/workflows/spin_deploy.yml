@@ -59,9 +59,11 @@ jobs:
       - name: Download and install Trunk binary
         run: wget -qO- https://github.com/trunk-rs/trunk/releases/download/v0.18.6/trunk-x86_64-unknown-linux-gnu.tar.gz | tar -xzf-
 
+      - name: Copy Trunk binary to $PATH
+        run: cp ./trunk /usr/local/bin
 
-      - name: Build with Trunk
-        run: ./trunk build --release
+      - name: Build app with Trunk
+        run: trunk build --release
 
 
       # Install Spin CLI & Deploy
