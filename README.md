@@ -5,7 +5,7 @@
 
 # Leptos CSR Examples 
 
-You can [see the deployed examples here][deployed-examples]
+You can [see the deployed examples here][deployed-examples].
 
 Then, to run the examples locally, clone the git repo & `cd` into the directory.
 
@@ -19,4 +19,4 @@ To build for deployment / release:
 
 `trunk build --release`
 
-[deplpyed-examples]: https://csr-examples-hjh4tnot.fermyon.app
+[deployed-examples]: https://csr-examples-hjh4tnot.fermyon.app
