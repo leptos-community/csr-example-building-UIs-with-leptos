@@ -3,23 +3,20 @@
     <img src="https://raw.githubusercontent.com/leptos-rs/leptos/main/docs/logos/Leptos_logo_RGB.svg" alt="Leptos Logo">
 </picture>
 
-# Leptos Client-Side Rendered (CSR) App - Starter Template
+# Leptos CSR Examples 
 
-Ensure that you have 'cargo-generate' installed:
+You can [see the deployed examples here][deployed-examples]
 
-`cargo install cargo-generate`
+Then, to run the examples locally, clone the git repo & `cd` into the directory.
 
+Then to spin up the examples, run:
 
-Then, to use this template, run:
+```sh
+trunk serve --port 3000 --open
+```
 
-`cargo generate --git https://github.com/leptos-community/start-csr`
-
-
-To run / develop:
-
-`trunk serve --port 3000 --open`
-
-
-To build:
+To build for deployment / release:
 
 `trunk build --release`
+
+[deplpyed-examples]: https://csr-examples-hjh4tnot.fermyon.app
