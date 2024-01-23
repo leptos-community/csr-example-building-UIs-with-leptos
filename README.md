@@ -7,7 +7,7 @@
 
 You can [see the deployed examples here][deployed-examples].
 
-Then, to run the examples locally, clone the git repo & `cd` into the directory.
+To run the examples locally, clone the git repo & `cd` into the directory.
 
 Then to spin up the examples, run:
 
@@ -17,6 +17,8 @@ trunk serve --port 3000 --open
 
 To build for deployment / release:
 
-`trunk build --release`
+```sh
+trunk build --release
+```
 
 [deployed-examples]: https://csr-examples-hjh4tnot.fermyon.app
