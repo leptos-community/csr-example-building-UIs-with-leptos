@@ -1,15 +1,13 @@
 use crate::components::incr_button::IncrButton;
-use crate::components::modal::Modal;
-use crate::components::modal_form::FormModal;
-use crate::components::select_dropdown::SelectAnimal;
 
 use leptos::*;
+
 
 /// Default Home Page
 #[component]
 pub fn Home() -> impl IntoView {
     view! {
-        <div id="home_page" class="container">
+        <div class="page_container">
 
             <picture>
                 <source
@@ -24,18 +22,12 @@ pub fn Home() -> impl IntoView {
                 />
             </picture>
 
-            <h1>"Welcome to Leptos"</h1>
+            <h1 class="welcome">"Welcome to Leptos"</h1>
 
             <div class="buttons">
                 <IncrButton/>
                 <IncrButton increment=5/>
             </div>
-
-            <SelectAnimal/>
-
-            <Modal/>
-
-            <FormModal/>
 
         </div>
     }

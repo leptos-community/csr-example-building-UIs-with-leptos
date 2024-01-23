@@ -25,7 +25,7 @@ enum Animals {
 }
 
 #[component]
-pub fn SelectAnimal() -> impl IntoView {
+pub fn SelectOption() -> impl IntoView {
     let (selected_option, set_selected_option) = create_signal(Animals::default());
 
     let options = Animals::iter()
@@ -49,7 +49,6 @@ pub fn SelectAnimal() -> impl IntoView {
 
 
     view! {
-        <hr/>
         <h2>
             <label for="favourite_animal">"Select Your Favourite Animal"</label>
         </h2>
@@ -64,13 +63,6 @@ pub fn SelectAnimal() -> impl IntoView {
             {options}
         </select>
 
-
-
-        <p>
-            "Your favourite animal is: " { move ||
-                format!("{}", selected_option().to_string())
-            }
-        </p>
-
+        <p>"Your favourite animal is: " {move || format!("{}", selected_option().to_string())}</p>
     }
 }

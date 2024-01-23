@@ -9,16 +9,63 @@
 
 /* ------------------------------------------------------------ */
 
+/* ---Theming --- */
+
+html {
+  --brand-light: var(--red-8);
+
+  --text-1-light: var(--gray-8);
+  --text-2-light: var(--gray-7);
+
+  --surface-1-light: var(--gray-0);
+  --surface-2-light: var(--gray-1);
+  --surface-3-light: var(--gray-2);
+  --surface-4-light: var(--gray-3);
+}
+@media (prefers-color-scheme: dark) {
+  html {
+    --brand-dark: var(--red-6);
+
+    --text-1-dark: var(--gray-3);
+    --text-2-dark: var(--gray-5);
+
+    --surface-1-dark: var(--gray-12);
+    --surface-2-dark: var(--gray-11);
+    --surface-3-dark: var(--gray-10);
+    --surface-4-dark: var(--gray-9);
+  }
+}
+
+:root {
+  --brand: var(--brand-light);
+
+  --text-1: var(--text-1-light);
+  --text-2: var(--text-2-light);
+
+  --surface-1: var(--surface-1-light);
+  --surface-2: var(--surface-2-light);
+  --surface-3: var(--surface-3-light);
+  --surface-4: var(--surface-4-light);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --brand: var(--brand-dark);
+
+    --text-1: var(--text-1-dark);
+    --text-2: var(--text-2-dark);
+
+    --surface-1: var(--surface-1-dark);
+    --surface-2: var(--surface-2-dark);
+    --surface-3: var(--surface-3-dark);
+    --surface-4: var(--surface-4-dark);
+  }
+}
+
+/* --- END Theming --- */
+
 body {
   font-family: sans-serif;
   text-align: center;
-}
-
-.container {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
 }
 
 p,
@@ -37,6 +84,39 @@ button {
   margin: var(--size-6);
 }
 
+/* --- Nav Bar --- */
+.main_nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  background-image: var(--gradient-20);
+  padding: var(--size-3);
+
+  font-size: var(--size-7);
+  box-shadow: var(--shadow-5);
+
+  a {
+    padding: var(--size-4);
+    color: var(--gray-0);
+    text-decoration-color: var(--indigo-11);
+
+    :hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+/* --- END Nav Bar --- */
+
+.page_container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+/* --- Home page --- */
 body > picture {
   display: block;
   margin-left: auto;
@@ -44,6 +124,11 @@ body > picture {
   text-align: center;
   margin: 2rem;
 }
+
+.welcome {
+  color: var(--brand);
+}
+/* --- END home page --- */
 
 /* Incrementing buttons horizontal layout */
 .buttons {
@@ -79,11 +164,10 @@ body > picture {
 .modal_body {
   margin: var(--size-8);
 }
-
 /* END modal (portal overlay) */
 
 /**/
-/* Modal Form */
+/* Modal Contact Form */
 .modal_form_title {
   font-size: var(--size-8);
 }
@@ -103,5 +187,4 @@ body > picture {
 .contact_input:first-of-type {
   margin-top: var(--size-6);
 }
-
-/* END modal form */
+/* END modal contact form */
