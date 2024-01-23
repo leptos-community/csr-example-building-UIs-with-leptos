@@ -1,6 +1,7 @@
 // use cfg_if::cfg_if;
 use leptos::html::Div;
 use leptos::*;
+use leptos_router::Form;
 
 use leptos_use::on_click_outside;
 
@@ -63,25 +64,42 @@ pub fn FormModal() -> impl IntoView {
 #[component]
 fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
     // --- Modal Body ---
-    let (contents_hidden, set_contents_hidden) = create_signal(false);
+
+    // Setup name fields
+    let (first_name, set_first_name) = create_signal("".to_string());
+    let (last_name, set_last_name) = create_signal("".to_string());
+
+    let on_first_name_input = move |ev| {
+        set_first_name(event_target_value(&ev));
+    };
+    let on_last_name_input = move |ev| {
+        set_last_name(event_target_value(&ev));
+    };
+
+    let first_name_form_len = move || first_name().len();
+    let last_name_form_len = move || last_name().len();
 
 
     // --- email address form, with email address checked by regex_lite ---
     let (email_addr, set_email_addr) = create_signal("".to_string());
 
     // Update email addr form field
-    let on_input = move |evt| {
-        set_email_addr(event_target_value(&evt));
+    let on_email_input = move |ev| {
+        set_email_addr(event_target_value(&ev));
     };
 
     // test if email addr conforms
     let check_email_resource =
-        create_resource(
+        create_local_resource(
             email_addr,
             |val| async move { check_email_regex(val).await },
         );
 
     let is_email_good = move || check_email_resource.get().unwrap_or_else(|| false);
+
+    let email_form_len = move || email_addr().len();
+
+    // let post_form_data = create_action(action_fn);
 
     // --- END email address form ---
 
@@ -89,49 +107,107 @@ fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
     view! {
         <aside class="modal_body">
 
-            <p>"This is in the modal's (portal) body element"</p>
+            <h2 class="modal_form_title">"Contact Us"</h2>
 
-            <button id="btn-toggle" on:click=move |_| set_contents_hidden(!contents_hidden())>
+            <Form method="POST" action="">
+                <fieldset class="contact_form_fieldset" form="contact_form" name="contact_form">
 
-                "Toggle modal content"
-            </button>
+                    <div class="contact_input">
+                        <label class="input_label" for="first_name">
+                            "First name:"
+                        </label>
+                        <input
+                            class="contact_input"
+                            name="first_name"
+                            id="first_name"
+                            type="text"
+                            placeholder="Johnny"
+                            prop:value=first_name
+                            on:input=on_first_name_input
+                        />
+                        <Transition fallback=|| view! { format!("{}", "🤔".to_string()) }>
+                            <span>
+                                {move || {
+                                    if first_name_form_len() == 0 {
+                                        format!(" {}", "*".to_string())
+                                    } else if first_name_form_len() > 2 {
+                                        format!(" {}", "✅".to_string())
+                                    } else {
+                                        format!(" {}", "❌".to_string())
+                                    }
+                                }}
 
-            <Show when=contents_hidden fallback=|| view! { "Hidden" }>
-                "Visible"
-            </Show>
+                            </span>
+                        </Transition>
+                    </div>
 
-            <p>"More contents..."</p>
+                    <br/>
 
-            <form method="dialog">
-                <label for="email">"Please enter your email address"</label>
-                <br/>
-                <input
-                    name="email"
-                    id="email"
-                    type="email"
-                    placeholder="your.email@website.com"
-                    prop:value=email_addr
-                    on:input=on_input
-                />
+                    <div class="contact_input">
+                        <label class="input_label" for="last_name">
+                            "Last name:"
+                        </label>
+                        <input
+                            name="last_name"
+                            id="last_name"
+                            type="text"
+                            placeholder="Appleseed"
+                            prop:value=last_name
+                            on:input=on_last_name_input
+                        />
+                        <Transition fallback=|| view! { format!("{}", "🤔".to_string()) }>
+                            <span>
+                                {move || {
+                                    if last_name_form_len() == 0 {
+                                        format!(" {}", "*".to_string())
+                                    } else if last_name_form_len() > 2 {
+                                        format!(" {}", "✅".to_string())
+                                    } else {
+                                        format!(" {}", "❌".to_string())
+                                    }
+                                }}
 
-                <Transition fallback=|| view! { format!("{}", "🤔".to_string()) }>
+                            </span>
+                        </Transition>
+                    </div>
 
-                    <span>
-                        {move || {
-                            if is_email_good() {
-                                format!(" {}", "✅".to_string())
-                            } else {
-                                format!(" {}", "❌".to_string())
-                            }
-                        }}
+                    <br/>
 
-                    </span>
+                    <div class="contact_input">
+                        <label class="input_label" for="email">
+                            "Email address:"
+                        </label>
+                        <input
 
-                </Transition>
+                            name="email"
+                            id="email"
+                            type="email"
+                            placeholder="your.email@website.com"
+                            prop:value=email_addr
+                            on:input=on_email_input
+                        />
+                        <Transition fallback=|| view! { format!("{}", "🤔".to_string()) }>
+                            <span>
+                                {move || {
+                                    if email_form_len() == 0 {
+                                        format!(" {}", "*".to_string())
+                                    } else if is_email_good() {
+                                        format!(" {}", "✅".to_string())
+                                    } else {
+                                        format!(" {}", "❌".to_string())
+                                    }
+                                }}
 
-                <br/>
-                <button on:click=move |_| set_show_modal(false)>"Submit"</button>
-            </form>
+                            </span>
+                        </Transition>
+                    </div>
+
+                    <br/>
+                    <button class="submit_contact_form" on:click=move |_| set_show_modal(false)>
+                        "Submit ➡"
+                    </button>
+                </fieldset>
+            </Form>
         </aside>
     }
 }
