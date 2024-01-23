@@ -67,12 +67,14 @@ pub fn App() -> impl IntoView {
 
                 <Router>
                     <nav class="main_nav">
-                        <img
-                            src="leptos_logo.png"
-                            alt="A logo for the Leptos fullstack Rust web framework"
-                            height="75"
-                            width="75"
-                        />
+                        <A href="">
+                            <img
+                                src="leptos_logo.png"
+                                alt="A logo for the Leptos fullstack Rust web framework"
+                                height="75"
+                                width="75"
+                            />
+                        </A>
 
                         <div>
                             <A href="">"Home"</A>
@@ -85,18 +87,20 @@ pub fn App() -> impl IntoView {
 
                     </nav>
 
-                    <main>
+                    <main class="page_container">
                         <Routes>
                             <Route path="/" view=Home/>
                             <Route path="/examples" view=Examples/>
                             <Route path="/contact" view=Contact/>
 
-                            <Route path="/*" view=NotFound/>
+                            <Route path="/*any" view=NotFound/>
                         </Routes>
                     </main>
                 </Router>
 
             </ErrorBoundary>
         </div>
+        // When no z-index is set on elements, elements lower in the hierarchy take higher precedence; so appending the portal root *last* ensures the portal container element will have higher z-index precedence
+        <div id="portal_root"></div>
     }
 }

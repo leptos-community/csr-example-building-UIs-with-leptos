@@ -10,6 +10,38 @@ description = "deploy Leptos CSR examples with Spin"
 route = "/..."
 component = "csr-examples"
 
+[component.csr-examples.build]
+command = "trunk build --release"
+watch = ["src/**/*.rs", "Cargo.toml"]
+
 [component.csr-examples]
 source = { url = "https://github.com/fermyon/spin-fileserver/releases/download/v0.1.0/spin_static_fs.wasm", digest = "sha256:96c76d9af86420b39eb6cd7be5550e3cb5d4cc4de572ce0fd1f6a29471536cb4" }
+files = [{ source = "dist", destination = "/" }]
+
+
+# Set up "examples" page routing
+[[trigger.http]]
+route = "/examples/..."
+component = "examples-page"
+
+[component.examples-page]
+source = { url = "https://github.com/fermyon/spin-fileserver/releases/download/v0.2.1/spin_static_fs.wasm", digest = "sha256:5f05b15f0f7cd353d390bc5ebffec7fe25c6a6d7a05b9366c86dcb1a346e9f0f" }
+files = [{ source = "dist", destination = "/" }]
+
+
+# Set up "contact" page routing
+[[trigger.http]]
+route = "/contact/..."
+component = "contact-page"
+
+[component.contact-page]
+source = { url = "https://github.com/fermyon/spin-fileserver/releases/download/v0.2.1/spin_static_fs.wasm", digest = "sha256:5f05b15f0f7cd353d390bc5ebffec7fe25c6a6d7a05b9366c86dcb1a346e9f0f" }
+files = [{ source = "dist", destination = "/" }]
+
+[[trigger.http]]
+route = "/*any/..."
+component = "not-found"
+
+[component.not-found]
+source = { url = "https://github.com/fermyon/spin-fileserver/releases/download/v0.2.1/spin_static_fs.wasm", digest = "sha256:5f05b15f0f7cd353d390bc5ebffec7fe25c6a6d7a05b9366c86dcb1a346e9f0f" }
 files = [{ source = "dist", destination = "/" }]
