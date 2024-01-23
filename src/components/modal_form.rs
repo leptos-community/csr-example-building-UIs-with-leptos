@@ -38,7 +38,7 @@ pub fn FormModal() -> impl IntoView {
         </button>
 
         <Show when=show_modal fallback=|| ()>
-            <Portal mount=document().get_element_by_id("app").unwrap()>
+            <Portal mount=document().get_element_by_id("portal_root").unwrap()>
                 <div class="modal_background">
                     <div _ref=modal_target>
                         <dialog class="modal_content" open=show_modal>

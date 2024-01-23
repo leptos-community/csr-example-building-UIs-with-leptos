@@ -91,12 +91,14 @@ pub fn App() -> impl IntoView {
                             <Route path="/examples" view=Examples/>
                             <Route path="/contact" view=Contact/>
 
-                            <Route path="/*" view=NotFound/>
+                            <Route path="/*any" view=NotFound/>
                         </Routes>
                     </main>
                 </Router>
 
             </ErrorBoundary>
         </div>
+        // When no z-index is set on elements, elements lower in the hierarchy take higher precedence; so appending the portal root *last* ensures the portal container element will have higher z-index precedence
+        <div id="portal_root"></div>
     }
 }
