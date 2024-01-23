@@ -81,3 +81,27 @@ body > picture {
 }
 
 /* END modal (portal overlay) */
+
+/**/
+/* Modal Form */
+.modal_form_title {
+  font-size: var(--size-8);
+}
+
+.contact_form_fieldset {
+  padding: var(--size-7);
+}
+
+.input_label {
+  padding-right: var(--size-2);
+}
+
+.submit_contact_form {
+  margin-top: var(--size-8);
+}
+
+.contact_input:first-of-type {
+  margin-top: var(--size-6);
+}
+
+/* END modal form */
