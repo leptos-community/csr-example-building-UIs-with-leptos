@@ -31,7 +31,7 @@ route = "/*/..."
 component = "csr-examples"
 
 
-# [component.csr-examples.build]
+[component.csr-examples.build]
 command = "trunk build --release"
 watch = ["src/**/*.rs", "Cargo.toml"]
 
