@@ -6,6 +6,7 @@ version = "0.1.0"
 authors = ["Diversable <dan.mantei@outlook.com>"]
 description = "deploy Leptos CSR examples with Spin"
 
+
 # Set up "home" (root) page routing
 [[trigger.http]]
 route = "/..."
@@ -13,22 +14,22 @@ component = "csr-examples"
 
 
 # Set up "examples" page routing
-[[trigger.http]]
-route = "/examples/..."
-component = "csr-examples"
+# [[trigger.http]]
+# route = "/examples/..."
+# component = "csr-examples"
 
 
 # Set up "contact" page routing
-[[trigger.http]]
-route = "/contact/..."
-component = "csr-examples"
+# [[trigger.http]]
+# route = "/contact/..."
+# component = "csr-examples"
 
 
-# --- (not working) ---
+# --- (does not work) ---
 # Handle 404 not-found
-[[trigger.http]]
-route = "/*/..."
-component = "csr-examples"
+# [[trigger.http]]
+# route = "/*"
+# component = "csr-examples"
 
 
 [component.csr-examples.build]

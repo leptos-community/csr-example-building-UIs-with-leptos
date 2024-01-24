@@ -1,3 +1,4 @@
+use crate::components::get_msg::GetMessage;
 use crate::components::modal::Modal;
 use crate::components::select_dropdown::SelectOption;
 
@@ -14,6 +15,10 @@ pub fn Examples() -> impl IntoView {
 
             <h2>"The Leptos <Portal/> Component"</h2>
             <Modal/>
+
+            <hr/>
+
+            <GetMessage/>
         </>
     }
 }
