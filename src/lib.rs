@@ -66,26 +66,28 @@ pub fn App() -> impl IntoView {
             }>
 
                 <Router>
-                    <nav class="main_nav">
-                        <A href="">
-                            <img
-                                src="leptos_logo.png"
-                                alt="A logo for the Leptos fullstack Rust web framework"
-                                height="75"
-                                width="75"
-                            />
-                        </A>
+                    <div class="nav_style">
+                        <nav class="main_nav">
+                            <A href="">
+                                <img
+                                    class="logo"
+                                    src="leptos_logo.png"
+                                    alt="A logo for the Leptos fullstack Rust web framework"
+                                    height="75"
+                                    width="75"
+                                />
+                            </A>
 
-                        <div>
-                            <A href="">"Home"</A>
+                            <menu class="menu">
+                                <A href="">"Home"</A>
 
-                            <A href="examples">"Examples"</A>
+                                <A href="examples">"Examples"</A>
 
-                            <A href="contact">"Contact"</A>
-                        </div>
-                        <div></div>
+                                <A href="contact">"Contact"</A>
+                            </menu>
 
-                    </nav>
+                        </nav>
+                    </div>
 
                     <main class="page_container">
                         <Routes>
@@ -100,6 +102,7 @@ pub fn App() -> impl IntoView {
 
             </ErrorBoundary>
         </div>
+
         // When no z-index is set on elements, elements lower in the hierarchy take higher precedence; so appending the portal root *last* ensures the portal container element will have higher z-index precedence
         <div id="portal_root"></div>
     }

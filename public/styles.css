@@ -85,26 +85,59 @@ button {
 }
 
 /* --- Nav Bar --- */
+.logo {
+  clip-path: circle(50%);
+  min-height: 25px;
+  min-width: 25px;
+}
+
 .main_nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
 
   background-image: var(--gradient-20);
-  padding: var(--size-3);
+  padding: var(--size-5);
+  margin-bottom: var(--size-4);
 
   font-size: var(--size-7);
   box-shadow: var(--shadow-5);
 
   a {
-    padding: var(--size-4);
+    padding: 0 var(--size-4);
     color: var(--gray-0);
     text-decoration-color: var(--indigo-11);
+    margin-bottom: var(--size-8);
 
     :hover {
       text-decoration: underline;
     }
   }
+}
+
+menu {
+  padding-right: 30vw;
+}
+
+@media (max-width: 650px) {
+  menu {
+    display: flex;
+    flex-direction: column;
+    padding-right: 18vw;
+  }
+}
+
+.nav_style {
+  /* Fancy cutout effect - top */
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    100% calc(100% - 50px),
+    calc(50% + 59.59px) calc(100% - 50px),
+    50% 100%,
+    calc(50% - 59.59px) calc(100% - 50px),
+    0 calc(100% - 50px)
+  );
 }
 
 /* --- END Nav Bar --- */
@@ -115,6 +148,19 @@ button {
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
+  padding-top: var(--size-7);
+
+  /* Fancy cutout effect - bottom */
+  clip-path: polygon(
+    0 0,
+    calc(50% - 3.64px - 59.59px) 0,
+    50% calc(50px + 3.05px),
+    calc(50% + 3.64px + 59.59px) 0,
+    100% 0,
+    100% 100%,
+    0 100%
+  );
+  margin-top: -40px;
 }
 /* --- --- */
 
