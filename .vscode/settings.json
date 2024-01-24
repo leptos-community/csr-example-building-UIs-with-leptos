@@ -4,5 +4,8 @@
 		"leptosfmt",
 		"--stdin",
 		"--rustfmt"
+	],
+	"rust-analyzer.linkedProjects": [
+		"./api/Cargo.toml"
 	]
 }
