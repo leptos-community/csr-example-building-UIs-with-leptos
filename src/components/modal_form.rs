@@ -92,13 +92,31 @@ fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
     let check_email_resource =
         create_local_resource(
             email_addr,
-            |val| async move { check_email_regex(val).await },
+            |email| async move { check_email_regex(email).await },
         );
 
     let is_email_good = move || check_email_resource.get().unwrap_or_else(|| false);
 
     let email_form_len = move || email_addr().len();
 
+
+    // --- Telephone input, checked locally by regex_lite ---
+    let (phone, set_phone) = create_signal("".to_string());
+
+    let on_phone_input = move |ev| {
+        set_phone(event_target_value(&ev));
+    };
+
+    // test if phone number conforms
+    let check_phone_number_resource =
+        create_local_resource(phone, |phone| async move { check_phone_regex(phone).await });
+
+    let is_phone_number_good = move || check_phone_number_resource.get().unwrap_or_else(|| false);
+
+    let phone_form_len = move || phone().len();
+
+
+    // --- Submit Form ---
     // let post_form_data = create_action(action_fn);
 
     // --- END email address form ---
@@ -118,6 +136,7 @@ fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
                         </label>
                         <input
                             class="contact_input"
+                            autofocus
                             name="first_name"
                             id="first_name"
                             type="text"
@@ -203,6 +222,36 @@ fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
                     </div>
 
                     <br/>
+
+                    <div class="contact_input">
+                        <label class="input_label" for="phone">
+                            "Phone number:"
+                        </label>
+                        <input
+                            name="phone"
+                            id="phone"
+                            type="tel"
+                            placeholder="1-250-555-5555"
+                            prop:value=phone
+                            on:input=on_phone_input
+                        />
+                        // <Transition fallback=|| view! { format!("{}", "🤔".to_string()) }>
+                        <span>
+                            {move || {
+                                if phone_form_len() == 0 {
+                                    format!(" {}", "*".to_string())
+                                } else if is_phone_number_good() {
+                                    format!(" {}", "✅".to_string())
+                                } else {
+                                    format!(" {}", "❌".to_string())
+                                }
+                            }}
+
+                        </span>
+                    // </Transition>
+                    </div>
+
+                    <br/>
                     <button class="submit_contact_form" on:click=move |_| set_show_modal(false)>
                         "Submit ➡"
                     </button>
@@ -220,4 +269,13 @@ async fn check_email_regex(email_addr: String) -> bool {
 
     // test email conforms
     email_regex.is_match(&email_addr)
+}
+
+async fn check_phone_regex(phone: String) -> bool {
+    let intl_phone_number_regex =
+        Regex::new(r"^(\+?\d{0,3}|\d{0,4})[-.\\s]?([0-9]{3})[-.\\s]?([0-9]{3})[-.\\s]?([0-9]{4})$")
+            .unwrap();
+
+    // test phone number conforms to North American standard
+    intl_phone_number_regex.is_match(&phone)
 }
