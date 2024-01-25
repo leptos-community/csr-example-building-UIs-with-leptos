@@ -17,8 +17,7 @@ pub fn Examples() -> impl IntoView {
             <Modal/>
 
             <hr/>
-
-            <GetMessage/>
         </>
     }
+    // <GetMessage/>
 }

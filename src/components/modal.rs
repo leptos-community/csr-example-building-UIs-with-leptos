@@ -31,7 +31,7 @@ pub fn Modal() -> impl IntoView {
 
 
     view! {
-        <button id="btn-show" on:click=move |_| set_show_modal(true)>
+        <button id="btn-show" type="button" on:click=move |_| set_show_modal(true)>
             Show Modal
         </button>
 

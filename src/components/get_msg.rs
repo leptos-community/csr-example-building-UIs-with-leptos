@@ -17,8 +17,8 @@ pub fn GetMessage() -> impl IntoView {
 
                 <p>"Getting secret message from the server..."</p>
                 <p>
-                    "your message is: " // {msg}
-                    "<Secret Message>"
+                    // {msg}
+                    "your message is: " "<Secret Message>"
                 </p>
             </ErrorBoundary>
         </Transition>

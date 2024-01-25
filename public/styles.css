@@ -90,6 +90,10 @@ button {
   min-height: 25px;
   min-width: 25px;
 }
+.example {
+  min-height: 50px;
+  min-width: 50px;
+}
 
 .main_nav {
   display: flex;
@@ -123,7 +127,7 @@ button {
   margin-bottom: var(--size-8);
 }
 
-@media (max-width: 650px) {
+@media (max-width: 700px) {
   menu {
     display: flex;
     flex-direction: column;
@@ -224,7 +228,7 @@ body > picture {
   margin-top: var(--size-9);
 }
 
-@media (max-width: 650px) {
+@media (max-width: 700px) {
   .modal_content {
     display: flex;
     flex-direction: column;
@@ -252,7 +256,7 @@ body > picture {
   margin: 0 var(--size-8) var(--size-8) var(--size-8);
 }
 
-@media (max-width: 650px) {
+@media (max-width: 700px) {
   .contact_form_fieldset {
     padding: var(--size-1);
     margin: var(--size-1);
