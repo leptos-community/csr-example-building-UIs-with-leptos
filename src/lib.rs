@@ -86,6 +86,15 @@ pub fn App() -> impl IntoView {
                                 <A href="contact">"Contact"</A>
                             </menu>
 
+                            <div class="example">
+                                <img
+                                    src="example_stamp.jpg"
+                                    alt="For example purposes only"
+                                    height="125"
+                                    width="125"
+                                />
+                            </div>
+
                         </nav>
                     </div>
 

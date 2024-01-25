@@ -90,6 +90,10 @@ button {
   min-height: 25px;
   min-width: 25px;
 }
+.example {
+  min-height: 50px;
+  min-width: 50px;
+}
 
 .main_nav {
   display: flex;
@@ -104,9 +108,9 @@ button {
   box-shadow: var(--shadow-5);
 
   a {
-    padding: 0 var(--size-4);
+    padding: 0 var(--size-4) 0 var(--size-8);
     color: var(--gray-0);
-    text-decoration-color: var(--indigo-11);
+    text-decoration-color: var(--indigo-12);
     text-decoration-thickness: var(--size-2);
     text-underline-offset: var(--size-2);
 
@@ -118,15 +122,19 @@ button {
   }
 }
 
-menu {
-  padding-right: 30vw;
+.example {
+  transform: rotate(30deg);
+  margin-bottom: var(--size-8);
 }
 
-@media (max-width: 650px) {
+@media (max-width: 700px) {
   menu {
     display: flex;
     flex-direction: column;
-    padding-right: 18vw;
+    margin-right: var(--size-6);
+  }
+  .example {
+    display: none;
   }
 }
 
@@ -202,9 +210,12 @@ body > picture {
 
 .modal_content {
   z-index: 20;
+  max-height: 80vh;
   min-height: 80vh;
+  max-width: 80vw;
   min-width: 80vw;
-  top: var(--size-8);
+  top: var(--size-10);
+  overflow-y: auto;
 }
 
 #btn-hide {
@@ -214,8 +225,24 @@ body > picture {
 }
 
 .modal_body {
-  margin: var(--size-8);
+  margin-top: var(--size-9);
 }
+
+@media (max-width: 700px) {
+  .modal_content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  #btn-hide {
+    margin-top: var(--size-1);
+    position: relative;
+  }
+  .modal_body {
+    margin-top: var(--size-2);
+  }
+}
+
 /* END modal (portal overlay) */
 
 /**/
@@ -225,7 +252,15 @@ body > picture {
 }
 
 .contact_form_fieldset {
-  padding: var(--size-7);
+  padding: var(--size-8);
+  margin: 0 var(--size-8) var(--size-8) var(--size-8);
+}
+
+@media (max-width: 700px) {
+  .contact_form_fieldset {
+    padding: var(--size-1);
+    margin: var(--size-1);
+  }
 }
 
 .input_label {

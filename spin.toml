@@ -6,6 +6,7 @@ version = "0.1.0"
 authors = ["Diversable <dan.mantei@outlook.com>"]
 description = "deploy Leptos CSR examples with Spin"
 
+
 # Set up "home" (root) page routing
 [[trigger.http]]
 route = "/..."
@@ -13,31 +14,32 @@ component = "csr-examples"
 
 
 # Set up "examples" page routing
-[[trigger.http]]
-route = "/examples/..."
-component = "csr-examples"
+# [[trigger.http]]
+# route = "/examples/..."
+# component = "csr-examples"
 
 
 # Set up "contact" page routing
-[[trigger.http]]
-route = "/contact/..."
-component = "csr-examples"
+# [[trigger.http]]
+# route = "/contact/..."
+# component = "csr-examples"
 
 
+# --- (does not work) ---
 # Handle 404 not-found
-# --- (not working) ---
-[[trigger.http]]
-route = "/*any/..."
-component = "csr-examples"
+# [[trigger.http]]
+# route = "/*"
+# component = "csr-examples"
 
 
-# [component.csr-examples.build]
-# command = "trunk build --release"
-# watch = ["src/**/*.rs", "Cargo.toml"]
+[component.csr-examples.build]
+command = "trunk build --release"
+watch = ["src/**/*.rs", "Cargo.toml"]
 
 [component.csr-examples]
 source = { url = "https://github.com/fermyon/spin-fileserver/releases/download/v0.2.1/spin_static_fs.wasm", digest = "sha256:5f05b15f0f7cd353d390bc5ebffec7fe25c6a6d7a05b9366c86dcb1a346e9f0f" }
 files = [{ source = "dist", destination = "/" }]
+environment = { FALLBACK_PATH = "index.html" }
 
 
 # Basic API to interact with from the client

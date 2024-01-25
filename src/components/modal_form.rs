@@ -33,7 +33,7 @@ pub fn FormModal() -> impl IntoView {
 
 
     view! {
-        <button id="btn-show" on:click=move |_| set_show_modal(true)>
+        <button id="btn-show" type="button" on:click=move |_| set_show_modal(true)>
             "Contact Us"
         </button>
 
@@ -276,6 +276,6 @@ async fn check_phone_regex(phone: String) -> bool {
         Regex::new(r"^(\+?\d{0,3}|\d{0,4})[-.\\s]?([0-9]{3})[-.\\s]?([0-9]{3})[-.\\s]?([0-9]{4})$")
             .unwrap();
 
-    // test phone number conforms to North American standard
+    // test phone number conforms to Intl standard
     intl_phone_number_regex.is_match(&phone)
 }
