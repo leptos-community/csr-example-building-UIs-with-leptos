@@ -104,7 +104,8 @@ reqwasm = "0.5.0"
 # wasm-bindgen-futures = "0.4"
 # gloo-timers = { version = "0.3", features = ["futures"] }
 # gloo-utils = { version = "0.2" }
-# js-sys = "0.3"
+js-sys = "0.3"
+serde = { version = "1.0.195", features = ["derive"] }
 
 # Serialization / Deserialization
 # serde = { version = "1.0.195", features = ["derive"] }

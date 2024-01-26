@@ -33,7 +33,8 @@ component = "csr-examples"
 
 
 [component.csr-examples.build]
-command = "trunk build --release"
+# command = "trunk build --release"
+command = "trunk build"
 watch = ["src/**/*.rs", "Cargo.toml"]
 
 [component.csr-examples]
