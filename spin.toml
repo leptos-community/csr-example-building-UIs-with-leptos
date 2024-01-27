@@ -56,3 +56,18 @@ allowed_outbound_hosts = []
 command = "cargo build --target wasm32-wasi --release"
 workdir = "api"
 watch = ["src/**/*.rs", "Cargo.toml"]
+
+
+# Target for submitting Contact form POST request
+[[trigger.http]]
+route = "/api/contact"
+component = "api-contact"
+
+[component.api-contact]
+source = "api_contact/target/wasm32-wasi/release/api_contact.wasm"
+allowed_outbound_hosts = []
+
+[component.api-contact.build]
+command = "cargo build --target wasm32-wasi --release"
+workdir = "api_contact"
+watch = ["src/**/*.rs", "Cargo.toml"]
