@@ -13,10 +13,9 @@ pub fn GetMessage() -> impl IntoView {
         Some(data) => view! {
             <p>
 
-                "The status code is: " {data.clone().map(|data| data.0)} <br/> "The message is: "
-                {data.clone().map(|data| data.1)}
-
+                "The status code is: " <br/> <strong>{data.clone().map(|data| data.0)}</strong>
             </p>
+            <p>"The message is: " <br/> <strong>{data.clone().map(|data| data.1)}</strong></p>
         }
         .into_view(),
     };
@@ -45,7 +44,7 @@ pub fn GetMessage() -> impl IntoView {
         }>
             <ErrorBoundary fallback=fallback>
 
-                <p>"Getting some data from the server..."</p>
+                <h2>"Getting JSON data from the server"</h2>
                 <p>{data()}</p>
 
             </ErrorBoundary>

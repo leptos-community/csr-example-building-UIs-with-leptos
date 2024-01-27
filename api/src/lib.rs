@@ -9,6 +9,6 @@ fn handle_api(req: Request) -> anyhow::Result<impl IntoResponse> {
     Ok(Response::builder()
         .status(200)
         .header("content-type", "text/json")
-        .body("{\"message\": \"Hello from the Spin WASI function\"}")
+        .body("{\"message\": \"Hello from a Spin WASI function\"}")
         .build())
 }
