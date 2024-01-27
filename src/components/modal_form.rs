@@ -119,6 +119,7 @@ fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
     // --- Submit Form ---
     // let post_form_data = create_action(action_fn);
 
+
     // --- END email address form ---
 
 
@@ -235,20 +236,20 @@ fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
                             prop:value=phone
                             on:input=on_phone_input
                         />
-                        // <Transition fallback=|| view! { format!("{}", "🤔".to_string()) }>
-                        <span>
-                            {move || {
-                                if phone_form_len() == 0 {
-                                    format!(" {}", "*".to_string())
-                                } else if is_phone_number_good() {
-                                    format!(" {}", "✅".to_string())
-                                } else {
-                                    format!(" {}", "❌".to_string())
-                                }
-                            }}
+                        <Transition fallback=|| view! { format!("{}", "🤔".to_string()) }>
+                            <span>
+                                {move || {
+                                    if phone_form_len() == 0 {
+                                        format!(" {}", "*".to_string())
+                                    } else if is_phone_number_good() {
+                                        format!(" {}", "✅".to_string())
+                                    } else {
+                                        format!(" {}", "❌".to_string())
+                                    }
+                                }}
 
-                        </span>
-                    // </Transition>
+                            </span>
+                        </Transition>
                     </div>
 
                     <br/>
