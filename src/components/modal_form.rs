@@ -1,11 +1,14 @@
+use std::rc::Rc;
+
 // use cfg_if::cfg_if;
 use leptos::html::Div;
 use leptos::*;
-use leptos_router::Form;
+use leptos_router::{Form, FormProps};
 
 use leptos_use::on_click_outside;
 
 use regex_lite::Regex;
+use web_sys::{Event, Response, SubmitEvent};
 
 
 #[component]
@@ -60,6 +63,9 @@ pub fn FormModal() -> impl IntoView {
     }
 }
 
+
+use serde::{Deserialize, Serialize};
+use serde_json;
 
 #[component]
 fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
@@ -117,18 +123,54 @@ fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
 
 
     // --- Submit Form ---
-    // let post_form_data = create_action(action_fn);
+    // let post_form_data_action = create_action(|input: &(String, String, String, String)| async {
+
+    // });
 
 
     // --- END email address form ---
 
+
+    let navigate = leptos_router::use_navigate();
+
+    // async move |data| logging::log!("{}", format!("{}", data))
+
+    // let response = Rc::new(move || {
+
+    // } as dyn Fn(&Response)());
+
+    // navigate("/contact", Default::default());
+    // set_show_modal(false);
+
+    // let mut res: &Response =
+    // let response = Rc::new(parse_response(res));
+
+    // let submit_listener = move |ev: SubmitEvent| ev.prevent_default();
+
+    // let form = document().get_element_by_id("contact_form").unwrap();
+
+    // form.add_event_listener_with_callback("submit", submit_listener);
+
+    let contact_form_ref = create_node_ref();
+
+    let contact_ref = contact_form_ref.get().unwrap();
+
+    let response = move || {};
 
     view! {
         <aside class="modal_body">
 
             <h2 class="modal_form_title">"Contact Us"</h2>
 
-            <Form method="POST" action="">
+            <Form
+                attr:id="contact_form"
+                method="POST"
+                action="http://localhost:3000/api/contact"
+                class="contact_form"
+                on_response=response
+                node_ref=contact_form_ref
+            >
+
                 <fieldset class="contact_form_fieldset" form="contact_form" name="contact_form">
 
                     <div class="contact_input">
@@ -253,7 +295,12 @@ fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
                     </div>
 
                     <br/>
-                    <button class="submit_contact_form" on:click=move |_| set_show_modal(false)>
+                    // type="submit"
+                    <button type="submit" class="submit_contact_form" on:click=move |_ev| { ev }>
+
+                        // navigate("/contact", Default::default());
+                        // set_show_modal(false);
+
                         "Submit ➡"
                     </button>
                 </fieldset>
@@ -279,4 +326,16 @@ async fn check_phone_regex(phone: String) -> bool {
 
     // test phone number conforms to Intl standard
     intl_phone_number_regex.is_match(&phone)
+}
+
+fn parse_response(response: &Response) {
+    let res = response.json().unwrap();
+}
+
+#[derive(Debug, Default, Clone, PartialEq, Serialize, Deserialize)]
+struct Contact {
+    first_name: String,
+    last_name: String,
+    email: String,
+    phone: String,
 }
