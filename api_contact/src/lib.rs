@@ -29,10 +29,10 @@ fn handle_api_contact(req: Request) -> anyhow::Result<impl IntoResponse> {
         Err(e) => {
             println!("Err: {}", e);
             Contact {
-                first_name: "".to_string(),
-                last_name: "".to_string(),
-                email: "".to_string(),
-                phone: "".to_string(),
+                first_name: "Error".to_string(),
+                last_name: "McError".to_string(),
+                email: "error@example.com".to_string(),
+                phone: "250-555-5555".to_string(),
             }
         }
     };

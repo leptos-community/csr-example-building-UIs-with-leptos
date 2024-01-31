@@ -1,14 +1,15 @@
-use std::rc::Rc;
+use js_sys::wasm_bindgen::UnwrapThrowExt;
 
-// use cfg_if::cfg_if;
 use leptos::html::Div;
+
 use leptos::*;
-use leptos_router::{Form, FormProps};
+use leptos_router::Form;
 
 use leptos_use::on_click_outside;
 
+use gloo_net;
 use regex_lite::Regex;
-use web_sys::{Event, Response, SubmitEvent};
+use web_sys::SubmitEvent;
 
 
 #[component]
@@ -65,7 +66,9 @@ pub fn FormModal() -> impl IntoView {
 
 
 use serde::{Deserialize, Serialize};
-use serde_json;
+
+
+use crate::pages::contact::ContactData;
 
 #[component]
 fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
@@ -121,41 +124,67 @@ fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
 
     let phone_form_len = move || phone().len();
 
-
-    // --- Submit Form ---
-    // let post_form_data_action = create_action(|input: &(String, String, String, String)| async {
-
-    // });
-
-
     // --- END email address form ---
 
 
-    let navigate = leptos_router::use_navigate();
+    // let error: RwSignal<Option<Box<dyn Error>>> = create_rw_signal(None);
 
-    // async move |data| logging::log!("{}", format!("{}", data))
 
-    // let response = Rc::new(move || {
+    let contact_form_ref: NodeRef<html::Form> = create_node_ref();
 
-    // } as dyn Fn(&Response)());
+    let setters =
+        use_context::<ContactData>().expect("should have found the setter provided by context");
 
-    // navigate("/contact", Default::default());
-    // set_show_modal(false);
 
-    // let mut res: &Response =
-    // let response = Rc::new(parse_response(res));
+    let on_submit = move |ev: SubmitEvent| {
+        // don't go to api page..
+        ev.prevent_default();
 
-    // let submit_listener = move |ev: SubmitEvent| ev.prevent_default();
+        let contact_form = contact_form_ref
+            .get()
+            .expect("Couldn't get reference to form");
 
-    // let form = document().get_element_by_id("contact_form").unwrap();
+        let action = contact_form
+            .get_attribute("action")
+            .unwrap_or_default()
+            .to_lowercase();
 
-    // form.add_event_listener_with_callback("submit", submit_listener);
 
-    let contact_form_ref = create_node_ref();
+        let contact_form_data = web_sys::FormData::new_with_form(&contact_form).unwrap_throw();
 
-    let contact_ref = contact_form_ref.get().unwrap();
 
-    let response = move || {};
+        spawn_local(async move {
+            let res = gloo_net::http::Request::post(&action)
+                .header("Accept", "application/json")
+                .body(contact_form_data)
+                .unwrap()
+                .send()
+                .await;
+
+
+            if let Ok(data) = res {
+                let results = data.json::<Contact>().await.expect("couldn't parse json");
+                logging::log!("results: {}", format!("{:?}", results));
+
+                logging::log!("First name: {}", format!("{:?}", results.first_name));
+
+
+                setters.set_contact_first_name.set(results.first_name);
+                setters.set_contact_last_name.set(results.last_name);
+                setters.set_contact_email_addr.set(results.email);
+                setters.set_contact_phone.set(results.phone);
+            } else {
+                logging::error!("<Form/> error while POSTing contact data");
+            }
+
+            // if let Err(err) = res {
+            //     logging::error!("<Form/> error while POSTing contact data: {err:#?}");
+            //     // error.try_set(Some(Box::new(err)));
+            // }
+            // let has_error = error.with_untracked(|val| val.is_some());
+        });
+        set_show_modal(false);
+    };
 
     view! {
         <aside class="modal_body">
@@ -166,10 +195,10 @@ fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
                 attr:id="contact_form"
                 method="POST"
                 action="http://localhost:3000/api/contact"
-                class="contact_form"
-                on_response=response
+                on:submit=on_submit
                 node_ref=contact_form_ref
             >
+                // error=error
 
                 <fieldset class="contact_form_fieldset" form="contact_form" name="contact_form">
 
@@ -295,12 +324,8 @@ fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
                     </div>
 
                     <br/>
-                    // type="submit"
-                    <button type="submit" class="submit_contact_form" on:click=move |_ev| { ev }>
 
-                        // navigate("/contact", Default::default());
-                        // set_show_modal(false);
-
+                    <button type="submit" class="submit_contact_form">
                         "Submit ➡"
                     </button>
                 </fieldset>
@@ -326,10 +351,6 @@ async fn check_phone_regex(phone: String) -> bool {
 
     // test phone number conforms to Intl standard
     intl_phone_number_regex.is_match(&phone)
-}
-
-fn parse_response(response: &Response) {
-    let res = response.json().unwrap();
 }
 
 #[derive(Debug, Default, Clone, PartialEq, Serialize, Deserialize)]
