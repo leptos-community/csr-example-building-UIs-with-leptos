@@ -164,10 +164,6 @@ fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
 
             if let Ok(data) = res {
                 let results = data.json::<Contact>().await.expect("couldn't parse json");
-                logging::log!("results: {}", format!("{:?}", results));
-
-                logging::log!("First name: {}", format!("{:?}", results.first_name));
-
 
                 setters.set_contact_first_name.set(results.first_name);
                 setters.set_contact_last_name.set(results.last_name);
