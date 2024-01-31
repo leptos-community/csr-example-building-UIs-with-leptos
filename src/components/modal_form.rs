@@ -127,9 +127,6 @@ fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
     // --- END email address form ---
 
 
-    // let error: RwSignal<Option<Box<dyn Error>>> = create_rw_signal(None);
-
-
     let contact_form_ref: NodeRef<html::Form> = create_node_ref();
 
     let setters =
@@ -179,12 +176,6 @@ fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
             } else {
                 logging::error!("<Form/> error while POSTing contact data");
             }
-
-            // if let Err(err) = res {
-            //     logging::error!("<Form/> error while POSTing contact data: {err:#?}");
-            //     // error.try_set(Some(Box::new(err)));
-            // }
-            // let has_error = error.with_untracked(|val| val.is_some());
         });
         set_show_modal(false);
     };
@@ -201,7 +192,6 @@ fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
                 on:submit=on_submit
                 node_ref=contact_form_ref
             >
-                // error=error
 
                 <fieldset class="contact_form_fieldset" form="contact_form" name="contact_form">
 
