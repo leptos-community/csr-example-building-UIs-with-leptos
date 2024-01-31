@@ -25,6 +25,7 @@ To build the full example project locally, (including the backend API) you'll ne
 
 <br/>
 To start up the project, run
+
 ```sh
 spin watch
 ```
