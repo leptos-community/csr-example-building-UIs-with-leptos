@@ -21,7 +21,7 @@ To build for deployment / release:
 trunk build --release
 ```
 
-To build the full example project, you'll need the Spin CLI.
+To build the full example project locally, (including the backend API) you'll need the Spin CLI.
 
 <br/>
 To start up the project, run
