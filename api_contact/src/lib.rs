@@ -3,7 +3,6 @@
 use serde::{Deserialize, Serialize};
 use serde_json;
 
-use serde_qs;
 use spin_sdk::http::{IntoResponse, Request, Response};
 use spin_sdk::http_component;
 
@@ -21,21 +20,48 @@ fn handle_api_contact(req: Request) -> anyhow::Result<impl IntoResponse> {
 
     let request_body = req.body();
 
-    let contact = match serde_qs::from_bytes::<Contact>(request_body) {
-        Ok(contact) => {
-            println!("{:?}", contact);
-            contact
-        }
-        Err(e) => {
-            println!("Err: {}", e);
-            Contact {
-                first_name: "Error".to_string(),
-                last_name: "McError".to_string(),
-                email: "error@example.com".to_string(),
-                phone: "250-555-5555".to_string(),
-            }
-        }
+    let req_str = str::from_utf8(&request_body).unwrap();
+
+
+    let first_name = req_str
+        .lines()
+        .into_iter()
+        .nth(3)
+        .unwrap_or_else(|| "Error")
+        .to_string();
+    // println!("First name: {}", first_name);
+
+    let last_name = req_str
+        .lines()
+        .into_iter()
+        .nth(7)
+        .unwrap_or_else(|| "McError")
+        .to_string();
+    // println!("Last name: {}", last_name);
+
+    let email = req_str
+        .lines()
+        .into_iter()
+        .nth(11)
+        .unwrap_or_else(|| "error@example.com")
+        .to_string();
+    // println!("Email: {}", email);
+
+    let phone = req_str
+        .lines()
+        .into_iter()
+        .nth(15)
+        .unwrap_or_else(|| "250-555-555")
+        .to_string();
+    // println!("Phone: {}", phone);
+
+    let contact = Contact {
+        first_name,
+        last_name,
+        email,
+        phone,
     };
+
 
     let contact_json = serde_json::to_string(&contact)?;
 

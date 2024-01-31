@@ -144,14 +144,15 @@ fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
             .get()
             .expect("Couldn't get reference to form");
 
+
+        let contact_form_data = web_sys::FormData::new_with_form(&contact_form).unwrap_throw();
+
+        logging::log!("Contact form data: {}", format!("{:?}", contact_form_data));
+
         let action = contact_form
             .get_attribute("action")
             .unwrap_or_default()
             .to_lowercase();
-
-
-        let contact_form_data = web_sys::FormData::new_with_form(&contact_form).unwrap_throw();
-
 
         spawn_local(async move {
             let res = gloo_net::http::Request::post(&action)
@@ -165,10 +166,16 @@ fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
             if let Ok(data) = res {
                 let results = data.json::<Contact>().await.expect("couldn't parse json");
 
-                setters.set_contact_first_name.set(results.first_name);
-                setters.set_contact_last_name.set(results.last_name);
-                setters.set_contact_email_addr.set(results.email);
-                setters.set_contact_phone.set(results.phone);
+                setters
+                    .set_contact_first_name
+                    .update(|val| *val = results.first_name);
+                setters
+                    .set_contact_last_name
+                    .update(|val| *val = results.last_name);
+                setters
+                    .set_contact_email_addr
+                    .update(|val| *val = results.email);
+                setters.set_contact_phone.update(|val| *val = results.phone);
             } else {
                 logging::error!("<Form/> error while POSTing contact data");
             }
@@ -204,7 +211,6 @@ fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
                         </label>
                         <input
                             class="contact_input"
-                            autofocus
                             name="first_name"
                             id="first_name"
                             type="text"

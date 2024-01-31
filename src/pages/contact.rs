@@ -12,7 +12,7 @@ pub struct ContactData {
 
 #[component]
 pub fn Contact() -> impl IntoView {
-    let (contact_first_name, set_contact_first_name) = create_signal("test".to_string());
+    let (contact_first_name, set_contact_first_name) = create_signal("".to_string());
 
     let (contact_last_name, set_contact_last_name) = create_signal("".to_string());
 
