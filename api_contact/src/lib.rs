@@ -18,6 +18,9 @@ fn handle_api_contact(req: Request) -> anyhow::Result<impl IntoResponse> {
         req.header("spin-full-url")
     );
 
+    println!("Origin header: {:?}", req.header("Origin"));
+
+
     let request_body = req.body();
 
     let req_str = str::from_utf8(&request_body).unwrap();
@@ -95,6 +98,7 @@ fn handle_api_contact(req: Request) -> anyhow::Result<impl IntoResponse> {
     Ok(Response::builder()
         .status(202)
         .header("Access-Control-Allow-Origin", "*")
+        .header("Access-Control-Allow-Methods", "POST")
         .header("content-type", "text/json")
         .body(contact_json)
         .build())

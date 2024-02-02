@@ -1,4 +1,4 @@
-use js_sys::wasm_bindgen::{JsCast, UnwrapThrowExt};
+use js_sys::wasm_bindgen::UnwrapThrowExt;
 
 use leptos::html::Div;
 
@@ -68,7 +68,7 @@ pub fn FormModal() -> impl IntoView {
 use serde::{Deserialize, Serialize};
 
 
-use crate::pages::contact::ContactData;
+use crate::{pages::contact::ContactData, BASE_API_URL};
 
 #[component]
 fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
@@ -101,10 +101,7 @@ fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
 
     // test if email addr conforms
     let check_email_resource =
-        create_local_resource(
-            email_addr,
-            |email| async move { check_email_regex(email).await },
-        );
+        create_local_resource(email_addr, |email| async move { check_email_regex(email) });
 
     let is_email_good = move || check_email_resource.get().unwrap_or_else(|| false);
 
@@ -120,7 +117,7 @@ fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
 
     // test if phone number conforms
     let check_phone_number_resource =
-        create_local_resource(phone, |phone| async move { check_phone_regex(phone).await });
+        create_local_resource(phone, |phone| async move { check_phone_regex(phone) });
 
     let is_phone_number_good = move || check_phone_number_resource.get().unwrap_or_else(|| false);
 
@@ -136,9 +133,7 @@ fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
                 phone_form_len(),
             )
         },
-        move |val| async move {
-            check_form_meets_minimum_requirements(val.0, val.1, val.2, val.3).await
-        },
+        move |val| async move { check_form_meets_minimum_requirements(val.0, val.1, val.2, val.3) },
     );
 
     let form_meets_reqs = move || {
@@ -155,10 +150,7 @@ fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
         use_context::<ContactData>().expect("should have found the setter provided by context");
 
 
-    let on_submit = move |ev: SubmitEvent| {
-        // don't go to api page..
-        ev.prevent_default();
-
+    let submit = move || {
         let contact_form = contact_form_ref
             .get()
             .expect("Couldn't get reference to form");
@@ -202,27 +194,22 @@ fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
         }
     };
 
+    let on_submit = move |ev: SubmitEvent| {
+        // don't go to api page..
+        ev.prevent_default();
 
-    // submit the form when pressing "enter" key
+        submit();
+    };
+
+
+    // submit the form when pressing "enter" key, even if not currently focused on an input field
     let submit_btn_ref = create_node_ref::<html::Button>();
 
     let submit_form_enter_key_listener =
         window_event_listener(ev::keydown, move |ev: KeyboardEvent| {
             if ev.key() == "Enter" {
-                // Alternate method...
-                // let submit_btn: HtmlButtonElement = document()
-                //     .get_element_by_id("submit")
-                //     .unwrap()
-                //     .unchecked_into();
-
-
-                let submit_btn = submit_btn_ref
-                    .get()
-                    .expect("Should be able to find submit button");
-
-                // submit the form if the 'Enter' key is clicked
                 if form_meets_reqs() {
-                    submit_btn.click();
+                    submit();
                 }
             }
         });
@@ -238,7 +225,7 @@ fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
             <Form
                 attr:id="contact_form"
                 method="POST"
-                action="https://csr-examples-hjh4tnot.fermyon.app/api/contact"
+                action=format!("{}/api/contact", BASE_API_URL)
                 on:submit=on_submit
                 node_ref=contact_form_ref
             >
@@ -390,7 +377,7 @@ struct Contact {
     phone: String,
 }
 
-async fn check_email_regex(email_addr: String) -> bool {
+fn check_email_regex(email_addr: String) -> bool {
     // Regex for checking email addresses
     let email_regex: Regex =
         Regex::new(r"^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$").unwrap();
@@ -399,7 +386,7 @@ async fn check_email_regex(email_addr: String) -> bool {
     email_regex.is_match(&email_addr)
 }
 
-async fn check_phone_regex(phone: String) -> bool {
+fn check_phone_regex(phone: String) -> bool {
     let intl_phone_number_regex =
         Regex::new(r"^(\+?\d{0,3}|\d{0,4})[-.\\s]?([0-9]{3})[-.\\s]?([0-9]{3})[-.\\s]?([0-9]{4})$")
             .unwrap();
@@ -408,7 +395,7 @@ async fn check_phone_regex(phone: String) -> bool {
     intl_phone_number_regex.is_match(&phone)
 }
 
-async fn check_form_meets_minimum_requirements(
+fn check_form_meets_minimum_requirements(
     first_name_form_len: usize,
     last_name_form_len: usize,
     email_form_len: usize,

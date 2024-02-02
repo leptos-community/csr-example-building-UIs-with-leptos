@@ -4,6 +4,8 @@ use leptos::*;
 use gloo_net;
 use serde::{Deserialize, Serialize};
 
+use crate::BASE_API_URL;
+
 #[component]
 pub fn GetMessage() -> impl IntoView {
     let msg = create_local_resource(|| (), |_| async move { get_message().await });
@@ -53,7 +55,7 @@ pub fn GetMessage() -> impl IntoView {
 }
 
 async fn get_message() -> Result<(u16, String)> {
-    let url = &format!("https://csr-examples-hjh4tnot.fermyon.app/api");
+    let url = &format!("{}/api", BASE_API_URL);
 
     let response = gloo_net::http::Request::get(url)
         .send()
