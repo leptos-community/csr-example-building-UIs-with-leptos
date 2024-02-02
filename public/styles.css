@@ -84,6 +84,11 @@ button {
   margin: var(--size-6);
 }
 
+hr {
+  border-top: var(--size-1) solid var(--brand) !important;
+  width: 50vw;
+}
+
 /* --- Nav Bar --- */
 .logo {
   clip-path: circle(50%);
@@ -335,10 +340,3 @@ h4 {
 } */
 
 /* END Certificate */
-
-hr {
-  border-top: var(--size-1) solid var(--brand) !important;
-  width: 50vw;
-  /* background-color: var(--brand); */
-  /* color: var(--brand); */
-}
