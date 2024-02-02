@@ -9,7 +9,7 @@ use leptos_use::on_click_outside;
 
 use gloo_net;
 use regex_lite::Regex;
-use web_sys::{HtmlButtonElement, KeyboardEvent, SubmitEvent};
+use web_sys::{KeyboardEvent, SubmitEvent};
 
 
 #[component]
@@ -203,14 +203,22 @@ fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
     };
 
 
-    // submit form when pressing "enter" key
+    // submit the form when pressing "enter" key
+    let submit_btn_ref = create_node_ref::<html::Button>();
+
     let submit_form_enter_key_listener =
         window_event_listener(ev::keydown, move |ev: KeyboardEvent| {
             if ev.key() == "Enter" {
-                let submit_btn: HtmlButtonElement = document()
-                    .get_element_by_id("submit")
-                    .unwrap()
-                    .unchecked_into();
+                // Alternate method...
+                // let submit_btn: HtmlButtonElement = document()
+                //     .get_element_by_id("submit")
+                //     .unwrap()
+                //     .unchecked_into();
+
+
+                let submit_btn = submit_btn_ref
+                    .get()
+                    .expect("Should be able to find submit button");
 
                 // submit the form if the 'Enter' key is clicked
                 if form_meets_reqs() {
@@ -230,7 +238,7 @@ fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
             <Form
                 attr:id="contact_form"
                 method="POST"
-                action="http://localhost:3000/api/contact"
+                action="https://csr-examples-hjh4tnot.fermyon.app/api/contact"
                 on:submit=on_submit
                 node_ref=contact_form_ref
             >
@@ -361,6 +369,7 @@ fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
 
                     <button
                         id="submit"
+                        node_ref=submit_btn_ref
                         type="submit"
                         class="submit_contact_form"
                         attr:disabled=move || !form_meets_reqs()
@@ -373,6 +382,13 @@ fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
     }
 }
 
+#[derive(Debug, Default, Clone, PartialEq, Serialize, Deserialize)]
+struct Contact {
+    first_name: String,
+    last_name: String,
+    email: String,
+    phone: String,
+}
 
 async fn check_email_regex(email_addr: String) -> bool {
     // Regex for checking email addresses
@@ -390,14 +406,6 @@ async fn check_phone_regex(phone: String) -> bool {
 
     // test phone number conforms to Intl standard
     intl_phone_number_regex.is_match(&phone)
-}
-
-#[derive(Debug, Default, Clone, PartialEq, Serialize, Deserialize)]
-struct Contact {
-    first_name: String,
-    last_name: String,
-    email: String,
-    phone: String,
 }
 
 async fn check_form_meets_minimum_requirements(
