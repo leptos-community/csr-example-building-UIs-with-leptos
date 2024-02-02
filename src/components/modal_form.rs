@@ -1,4 +1,4 @@
-use js_sys::wasm_bindgen::UnwrapThrowExt;
+use js_sys::wasm_bindgen::{JsCast, UnwrapThrowExt};
 
 use leptos::html::Div;
 
@@ -9,7 +9,7 @@ use leptos_use::on_click_outside;
 
 use gloo_net;
 use regex_lite::Regex;
-use web_sys::SubmitEvent;
+use web_sys::{HtmlButtonElement, KeyboardEvent, SubmitEvent};
 
 
 #[component]
@@ -75,6 +75,7 @@ fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
     // --- Modal Body ---
 
     // --- Contact Form ---
+
     // Setup name fields
     let (first_name, set_first_name) = create_signal("".to_string());
     let (last_name, set_last_name) = create_signal("".to_string());
@@ -178,6 +179,28 @@ fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
         });
         set_show_modal(false);
     };
+
+
+    // submit form when pressing "enter" key
+    let submit_form_enter_key_listener =
+        window_event_listener(ev::keydown, move |ev: KeyboardEvent| {
+            if ev.key() == "Enter" {
+                let submit_btn: HtmlButtonElement = document()
+                    .get_element_by_id("submit")
+                    .unwrap()
+                    .unchecked_into();
+
+                // submit the form if the 'Enter' key is clicked
+                if first_name_form_len() > 2
+                    && last_name_form_len() > 2
+                    && phone_form_len() > 6
+                    && email_form_len() > 7
+                {
+                    submit_btn.click();
+                }
+            }
+        });
+    on_cleanup(move || submit_form_enter_key_listener.remove());
 
     view! {
         <aside class="modal_body">
@@ -316,7 +339,7 @@ fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
 
                     <br/>
 
-                    <button type="submit" class="submit_contact_form">
+                    <button id="submit" type="submit" class="submit_contact_form">
                         "Submit ➡"
                     </button>
                 </fieldset>
