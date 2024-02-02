@@ -126,9 +126,29 @@ fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
 
     let phone_form_len = move || phone().len();
 
-    // --- END contact form ---
+    // Disable submit button until contact form meets requirements
+    let check_form_meets_requirements_resource = create_local_resource(
+        move || {
+            (
+                first_name_form_len(),
+                last_name_form_len(),
+                email_form_len(),
+                phone_form_len(),
+            )
+        },
+        move |val| async move {
+            check_form_meets_minimum_requirements(val.0, val.1, val.2, val.3).await
+        },
+    );
+
+    let form_meets_reqs = move || {
+        check_form_meets_requirements_resource
+            .get()
+            .unwrap_or_else(|| false)
+    };
 
 
+    // set up custom on:submit for contact form
     let contact_form_ref: NodeRef<html::Form> = create_node_ref();
 
     let setters =
@@ -151,33 +171,35 @@ fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
             .unwrap_or_default()
             .to_lowercase();
 
-        spawn_local(async move {
-            let res = gloo_net::http::Request::post(&action)
-                .header("Accept", "application/json")
-                .body(contact_form_data)
-                .unwrap()
-                .send()
-                .await;
+        if form_meets_reqs() {
+            spawn_local(async move {
+                let res = gloo_net::http::Request::post(&action)
+                    .header("Accept", "application/json")
+                    .body(contact_form_data)
+                    .unwrap()
+                    .send()
+                    .await;
 
 
-            if let Ok(data) = res {
-                let results = data.json::<Contact>().await.expect("couldn't parse json");
+                if let Ok(data) = res {
+                    let results = data.json::<Contact>().await.expect("couldn't parse json");
 
-                setters
-                    .set_contact_first_name
-                    .update(|val| *val = results.first_name);
-                setters
-                    .set_contact_last_name
-                    .update(|val| *val = results.last_name);
-                setters
-                    .set_contact_email_addr
-                    .update(|val| *val = results.email);
-                setters.set_contact_phone.update(|val| *val = results.phone);
-            } else {
-                logging::error!("<Form/> error while POSTing contact data");
-            }
-        });
-        set_show_modal(false);
+                    setters
+                        .set_contact_first_name
+                        .update(|val| *val = results.first_name);
+                    setters
+                        .set_contact_last_name
+                        .update(|val| *val = results.last_name);
+                    setters
+                        .set_contact_email_addr
+                        .update(|val| *val = results.email);
+                    setters.set_contact_phone.update(|val| *val = results.phone);
+                } else {
+                    logging::error!("<Form/> error while POSTing contact data");
+                }
+            });
+            set_show_modal(false);
+        }
     };
 
 
@@ -191,16 +213,14 @@ fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
                     .unchecked_into();
 
                 // submit the form if the 'Enter' key is clicked
-                if first_name_form_len() > 2
-                    && last_name_form_len() > 2
-                    && phone_form_len() > 6
-                    && email_form_len() > 7
-                {
+                if form_meets_reqs() {
                     submit_btn.click();
                 }
             }
         });
     on_cleanup(move || submit_form_enter_key_listener.remove());
+
+    // --- END contact form ---
 
     view! {
         <aside class="modal_body">
@@ -210,7 +230,7 @@ fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
             <Form
                 attr:id="contact_form"
                 method="POST"
-                action="https://csr-examples-hjh4tnot.fermyon.app/api/contact"
+                action="http://localhost:3000/api/contact"
                 on:submit=on_submit
                 node_ref=contact_form_ref
             >
@@ -339,7 +359,12 @@ fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
 
                     <br/>
 
-                    <button id="submit" type="submit" class="submit_contact_form">
+                    <button
+                        id="submit"
+                        type="submit"
+                        class="submit_contact_form"
+                        attr:disabled=move || !form_meets_reqs()
+                    >
                         "Submit ➡"
                     </button>
                 </fieldset>
@@ -373,4 +398,18 @@ struct Contact {
     last_name: String,
     email: String,
     phone: String,
+}
+
+async fn check_form_meets_minimum_requirements(
+    first_name_form_len: usize,
+    last_name_form_len: usize,
+    email_form_len: usize,
+    phone_form_len: usize,
+) -> bool {
+    if first_name_form_len > 2 && last_name_form_len > 2 && phone_form_len > 6 && email_form_len > 7
+    {
+        true
+    } else {
+        false
+    }
 }
