@@ -29,7 +29,6 @@ fn handle_api_contact(req: Request) -> anyhow::Result<impl IntoResponse> {
         .nth(3)
         .unwrap_or_else(|| "Error")
         .to_string();
-    // println!("First name: {}", first_name);
 
     let last_name = req_str
         .lines()
@@ -37,7 +36,6 @@ fn handle_api_contact(req: Request) -> anyhow::Result<impl IntoResponse> {
         .nth(7)
         .unwrap_or_else(|| "McError")
         .to_string();
-    // println!("Last name: {}", last_name);
 
     let email = req_str
         .lines()
@@ -45,15 +43,45 @@ fn handle_api_contact(req: Request) -> anyhow::Result<impl IntoResponse> {
         .nth(11)
         .unwrap_or_else(|| "error@example.com")
         .to_string();
-    // println!("Email: {}", email);
 
-    let phone = req_str
+    let mut phone = req_str
         .lines()
         .into_iter()
         .nth(15)
-        .unwrap_or_else(|| "250-555-555")
+        .unwrap_or_else(|| "250-555-5555")
         .to_string();
-    // println!("Phone: {}", phone);
+
+    let phone: String = if !phone.contains('-') && !phone.contains('+') {
+        let phone = match phone.len() {
+            10 => {
+                phone.insert(3, '-');
+                phone.insert(7, '-');
+                phone
+            }
+            11 => {
+                phone.insert(1, '-');
+                phone.insert(5, '-');
+                phone.insert(9, '-');
+                phone
+            }
+            12 => {
+                phone.insert(2, '-');
+                phone.insert(5, '-');
+                phone.insert(10, '-');
+                phone
+            }
+            13 => {
+                phone.insert(2, '-');
+                phone.insert(6, '-');
+                phone.insert(11, '-');
+                phone
+            }
+            _ => phone,
+        };
+        phone
+    } else {
+        phone
+    };
 
     let contact = Contact {
         first_name,
@@ -62,9 +90,7 @@ fn handle_api_contact(req: Request) -> anyhow::Result<impl IntoResponse> {
         phone,
     };
 
-
     let contact_json = serde_json::to_string(&contact)?;
-
 
     Ok(Response::builder()
         .status(202)

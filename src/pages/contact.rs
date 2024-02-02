@@ -90,22 +90,22 @@ fn ContactCard(
                     </div>
                 </div>
 
-                <div class="certificate">
-                    <h2>
-                        <i>"Certificate of Completion"</i>
-                    </h2>
-                    <h4>"This record certifies that "</h4>
-                    <h3>
-                        <strong class="name">
-                            {move || contact_first_name()} " " {move || contact_last_name()}
-                        </strong>
-                    </h3>
-                    <h4>"has completed"</h4>
-                    <h3>"Leptos Level 1"</h3>
-                    <h4>"Client-Side Rendering"</h4>
-                </div>
-
             </ErrorBoundary>
         </Transition>
     }
 }
+
+// <div class="certificate">
+//     <h2>
+//         <i>"Certificate of Completion"</i>
+//     </h2>
+//     <h4>"This record certifies that "</h4>
+//     <h3>
+//         <strong class="name">
+//             {move || contact_first_name()} " " {move || contact_last_name()}
+//         </strong>
+//     </h3>
+//     <h4>"has completed"</h4>
+//     <h3>"Leptos Level 1"</h3>
+//     <h4>"Client-Side Rendering"</h4>
+// </div>

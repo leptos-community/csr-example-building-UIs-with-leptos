@@ -1,7 +1,7 @@
 use leptos::error::Result;
 use leptos::*;
 
-use reqwasm;
+use gloo_net;
 use serde::{Deserialize, Serialize};
 
 #[component]
@@ -44,7 +44,7 @@ pub fn GetMessage() -> impl IntoView {
         }>
             <ErrorBoundary fallback=fallback>
 
-                <h2>"Getting JSON data from the server"</h2>
+                <h2>"Getting JSON data from a server"</h2>
                 <p>{data()}</p>
 
             </ErrorBoundary>
@@ -55,7 +55,7 @@ pub fn GetMessage() -> impl IntoView {
 async fn get_message() -> Result<(u16, String)> {
     let url = &format!("http://localhost:3000/api");
 
-    let response = reqwasm::http::Request::get(url)
+    let response = gloo_net::http::Request::get(url)
         .send()
         .await
         .expect("GET request to server failed");
