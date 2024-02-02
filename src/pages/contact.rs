@@ -29,23 +29,24 @@ pub fn Contact() -> impl IntoView {
 
     provide_context(contact_data_setters);
 
+    let show_contact_card = move || contact_first_name().len() > 0;
 
     view! {
         <>
             <h1>"Contact Form Modal"</h1>
+
             <FormModal/>
 
-            <h2>"Contact Information"</h2>
-            <h3>"Contact Card"</h3>
-
-            <Contact_Card contact_first_name contact_last_name contact_email_addr contact_phone/>
+            <Show when=show_contact_card>
+                <ContactCard contact_first_name contact_last_name contact_email_addr contact_phone/>
+            </Show>
         </>
     }
 }
 
 
 #[component]
-fn Contact_Card(
+fn ContactCard(
     contact_first_name: ReadSignal<String>,
     contact_last_name: ReadSignal<String>,
     contact_email_addr: ReadSignal<String>,
@@ -74,10 +75,35 @@ fn Contact_Card(
         }>
             <ErrorBoundary fallback=fallback>
 
-                <p>"First name: " <strong>{move || contact_first_name()}</strong></p>
-                <p>"Last name: " <strong>{move || contact_last_name()}</strong></p>
-                <p>"Email: " <strong>{move || contact_email_addr()}</strong></p>
-                <p>"Phone: " <strong>{move || contact_phone()}</strong></p>
+                <div class="contact">
+                    <h2>
+                        <strong>
+                            {move || contact_first_name()} " " {move || contact_last_name()}
+                        </strong>
+                    </h2>
+                    <h3>"Rust and Leptos Developer"</h3>
+                    <div class="contact_details">
+                        <strong>{move || contact_email_addr()}</strong>
+                    </div>
+                    <div class="contact_details">
+                        <strong>{move || contact_phone()}</strong>
+                    </div>
+                </div>
+
+                <div class="certificate">
+                    <h2>
+                        <i>"Certificate of Completion"</i>
+                    </h2>
+                    <h4>"This record certifies that "</h4>
+                    <h3>
+                        <strong class="name">
+                            {move || contact_first_name()} " " {move || contact_last_name()}
+                        </strong>
+                    </h3>
+                    <h4>"has completed"</h4>
+                    <h3>"Leptos Level 1"</h3>
+                    <h4>"Client-Side Rendering"</h4>
+                </div>
 
             </ErrorBoundary>
         </Transition>

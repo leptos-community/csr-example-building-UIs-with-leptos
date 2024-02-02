@@ -275,3 +275,58 @@ body > picture {
   margin-top: var(--size-6);
 }
 /* END modal contact form */
+
+/* 'Certificate of Completion' + Contact Card */
+
+.contact {
+  flex-basis: var(--size-content-1);
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-2);
+  background: var(--gradient-9);
+  border: 1px solid var(--surface-1);
+  border-radius: var(--radius-3);
+  box-shadow: var(--shadow-4);
+  padding: var(--size-3) var(--size-6) var(--size-4) var(--size-6);
+  margin: var(--size-4);
+}
+
+.contact_details {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  text-align: right;
+  padding: var(--size-2);
+}
+
+.certificate {
+  flex-basis: var(--size-content-1);
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-2);
+  background: var(--blue-12);
+  color: var(--gray-2);
+  border: 1px solid var(--surface-1);
+  padding: var(--size-8);
+  border-radius: var(--radius-3);
+  box-shadow: var(--shadow-5);
+  margin: var(--size-8);
+}
+
+.certificate > h2,
+h3,
+h4 {
+  /* line-height: var(--font-lineheight-1); */
+  font-family: serif;
+  padding: var(--size-2);
+  margin: 0;
+}
+
+.name {
+  font-family: sans-serif;
+  font-style: italic;
+  text-decoration: underline;
+  text-decoration-color: var(--gray-3);
+  text-underline-offset: var(--size-2);
+  padding: var(--size-2);
+}

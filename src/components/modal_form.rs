@@ -74,6 +74,7 @@ use crate::pages::contact::ContactData;
 fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
     // --- Modal Body ---
 
+    // --- Contact Form ---
     // Setup name fields
     let (first_name, set_first_name) = create_signal("".to_string());
     let (last_name, set_last_name) = create_signal("".to_string());
@@ -124,7 +125,7 @@ fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
 
     let phone_form_len = move || phone().len();
 
-    // --- END email address form ---
+    // --- END contact form ---
 
 
     let contact_form_ref: NodeRef<html::Form> = create_node_ref();
@@ -143,8 +144,6 @@ fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
 
 
         let contact_form_data = web_sys::FormData::new_with_form(&contact_form).unwrap_throw();
-
-        logging::log!("Contact form data: {}", format!("{:?}", contact_form_data));
 
         let action = contact_form
             .get_attribute("action")
