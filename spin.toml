@@ -33,12 +33,14 @@ component = "csr-examples"
 
 
 [component.csr-examples.build]
-command = "trunk build --release"
+# command = "trunk build --release"
+command = "trunk build"
 watch = ["src/**/*.rs", "Cargo.toml"]
 
 [component.csr-examples]
 source = { url = "https://github.com/fermyon/spin-fileserver/releases/download/v0.2.1/spin_static_fs.wasm", digest = "sha256:5f05b15f0f7cd353d390bc5ebffec7fe25c6a6d7a05b9366c86dcb1a346e9f0f" }
 files = [{ source = "dist", destination = "/" }]
+# set the fallback path so Spin works well with the Leptos Router
 environment = { FALLBACK_PATH = "index.html" }
 
 
@@ -54,4 +56,19 @@ allowed_outbound_hosts = []
 [component.api.build]
 command = "cargo build --target wasm32-wasi --release"
 workdir = "api"
+watch = ["src/**/*.rs", "Cargo.toml"]
+
+
+# Target for submitting Contact form POST request
+[[trigger.http]]
+route = "/api/contact"
+component = "api-contact"
+
+[component.api-contact]
+source = "api_contact/target/wasm32-wasi/release/api_contact.wasm"
+allowed_outbound_hosts = []
+
+[component.api-contact.build]
+command = "cargo build --target wasm32-wasi --release"
+workdir = "api_contact"
 watch = ["src/**/*.rs", "Cargo.toml"]

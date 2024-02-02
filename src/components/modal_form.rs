@@ -1,11 +1,15 @@
-// use cfg_if::cfg_if;
+use js_sys::wasm_bindgen::{JsCast, UnwrapThrowExt};
+
 use leptos::html::Div;
+
 use leptos::*;
 use leptos_router::Form;
 
 use leptos_use::on_click_outside;
 
+use gloo_net;
 use regex_lite::Regex;
+use web_sys::{HtmlButtonElement, KeyboardEvent, SubmitEvent};
 
 
 #[component]
@@ -61,9 +65,16 @@ pub fn FormModal() -> impl IntoView {
 }
 
 
+use serde::{Deserialize, Serialize};
+
+
+use crate::pages::contact::ContactData;
+
 #[component]
 fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
     // --- Modal Body ---
+
+    // --- Contact Form ---
 
     // Setup name fields
     let (first_name, set_first_name) = create_signal("".to_string());
@@ -115,19 +126,95 @@ fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
 
     let phone_form_len = move || phone().len();
 
+    // --- END contact form ---
 
-    // --- Submit Form ---
-    // let post_form_data = create_action(action_fn);
 
-    // --- END email address form ---
+    let contact_form_ref: NodeRef<html::Form> = create_node_ref();
 
+    let setters =
+        use_context::<ContactData>().expect("should have found the setter provided by context");
+
+
+    let on_submit = move |ev: SubmitEvent| {
+        // don't go to api page..
+        ev.prevent_default();
+
+        let contact_form = contact_form_ref
+            .get()
+            .expect("Couldn't get reference to form");
+
+
+        let contact_form_data = web_sys::FormData::new_with_form(&contact_form).unwrap_throw();
+
+        let action = contact_form
+            .get_attribute("action")
+            .unwrap_or_default()
+            .to_lowercase();
+
+        spawn_local(async move {
+            let res = gloo_net::http::Request::post(&action)
+                .header("Accept", "application/json")
+                .body(contact_form_data)
+                .unwrap()
+                .send()
+                .await;
+
+
+            if let Ok(data) = res {
+                let results = data.json::<Contact>().await.expect("couldn't parse json");
+
+                setters
+                    .set_contact_first_name
+                    .update(|val| *val = results.first_name);
+                setters
+                    .set_contact_last_name
+                    .update(|val| *val = results.last_name);
+                setters
+                    .set_contact_email_addr
+                    .update(|val| *val = results.email);
+                setters.set_contact_phone.update(|val| *val = results.phone);
+            } else {
+                logging::error!("<Form/> error while POSTing contact data");
+            }
+        });
+        set_show_modal(false);
+    };
+
+
+    // submit form when pressing "enter" key
+    let submit_form_enter_key_listener =
+        window_event_listener(ev::keydown, move |ev: KeyboardEvent| {
+            if ev.key() == "Enter" {
+                let submit_btn: HtmlButtonElement = document()
+                    .get_element_by_id("submit")
+                    .unwrap()
+                    .unchecked_into();
+
+                // submit the form if the 'Enter' key is clicked
+                if first_name_form_len() > 2
+                    && last_name_form_len() > 2
+                    && phone_form_len() > 6
+                    && email_form_len() > 7
+                {
+                    submit_btn.click();
+                }
+            }
+        });
+    on_cleanup(move || submit_form_enter_key_listener.remove());
 
     view! {
         <aside class="modal_body">
 
             <h2 class="modal_form_title">"Contact Us"</h2>
 
-            <Form method="POST" action="">
+            <Form
+                attr:id="contact_form"
+                method="POST"
+                action="https://csr-examples-hjh4tnot.fermyon.app/api/contact"
+                on:submit=on_submit
+                node_ref=contact_form_ref
+            >
+
                 <fieldset class="contact_form_fieldset" form="contact_form" name="contact_form">
 
                     <div class="contact_input">
@@ -136,7 +223,6 @@ fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
                         </label>
                         <input
                             class="contact_input"
-                            autofocus
                             name="first_name"
                             id="first_name"
                             type="text"
@@ -235,24 +321,25 @@ fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
                             prop:value=phone
                             on:input=on_phone_input
                         />
-                        // <Transition fallback=|| view! { format!("{}", "🤔".to_string()) }>
-                        <span>
-                            {move || {
-                                if phone_form_len() == 0 {
-                                    format!(" {}", "*".to_string())
-                                } else if is_phone_number_good() {
-                                    format!(" {}", "✅".to_string())
-                                } else {
-                                    format!(" {}", "❌".to_string())
-                                }
-                            }}
+                        <Transition fallback=|| view! { format!("{}", "🤔".to_string()) }>
+                            <span>
+                                {move || {
+                                    if phone_form_len() == 0 {
+                                        format!(" {}", "*".to_string())
+                                    } else if is_phone_number_good() {
+                                        format!(" {}", "✅".to_string())
+                                    } else {
+                                        format!(" {}", "❌".to_string())
+                                    }
+                                }}
 
-                        </span>
-                    // </Transition>
+                            </span>
+                        </Transition>
                     </div>
 
                     <br/>
-                    <button class="submit_contact_form" on:click=move |_| set_show_modal(false)>
+
+                    <button id="submit" type="submit" class="submit_contact_form">
                         "Submit ➡"
                     </button>
                 </fieldset>
@@ -278,4 +365,12 @@ async fn check_phone_regex(phone: String) -> bool {
 
     // test phone number conforms to Intl standard
     intl_phone_number_regex.is_match(&phone)
+}
+
+#[derive(Debug, Default, Clone, PartialEq, Serialize, Deserialize)]
+struct Contact {
+    first_name: String,
+    last_name: String,
+    email: String,
+    phone: String,
 }
