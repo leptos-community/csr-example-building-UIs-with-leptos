@@ -94,6 +94,7 @@ fn handle_api_contact(req: Request) -> anyhow::Result<impl IntoResponse> {
 
     Ok(Response::builder()
         .status(202)
+        .header("Access-Control-Allow-Origin", "*")
         .header("content-type", "text/json")
         .body(contact_json)
         .build())
