@@ -14,6 +14,8 @@ use crate::pages::examples::Examples;
 use crate::pages::home::Home;
 use crate::pages::not_found::NotFound;
 
+pub const BASE_API_URL: &str = "https://csr-examples-hjh4tnot.fermyon.app";
+
 /// An app router which renders the homepage and handles 404's
 #[component]
 pub fn App() -> impl IntoView {
