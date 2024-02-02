@@ -210,7 +210,7 @@ fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
             <Form
                 attr:id="contact_form"
                 method="POST"
-                action="http://localhost:3000/api/contact"
+                action="https://csr-examples-hjh4tnot.fermyon.app/api/contact"
                 on:submit=on_submit
                 node_ref=contact_form_ref
             >

@@ -53,7 +53,7 @@ pub fn GetMessage() -> impl IntoView {
 }
 
 async fn get_message() -> Result<(u16, String)> {
-    let url = &format!("http://localhost:3000/api");
+    let url = &format!("https://csr-examples-hjh4tnot.fermyon.app/api");
 
     let response = gloo_net::http::Request::get(url)
         .send()
