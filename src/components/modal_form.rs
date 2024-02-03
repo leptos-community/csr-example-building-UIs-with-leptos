@@ -247,11 +247,11 @@ fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
                             <span>
                                 {move || {
                                     if first_name_form_len() == 0 {
-                                        format!(" {}", "*".to_string())
+                                        " *"
                                     } else if first_name_form_len() > 2 {
-                                        format!(" {}", "✅".to_string())
+                                        " ✅"
                                     } else {
-                                        format!(" {}", "❌".to_string())
+                                        " ❌"
                                     }
                                 }}
 
@@ -279,11 +279,11 @@ fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
                             <span>
                                 {move || {
                                     if last_name_form_len() == 0 {
-                                        format!(" {}", "*".to_string())
+                                        " *"
                                     } else if last_name_form_len() > 2 {
-                                        format!(" {}", "✅".to_string())
+                                        " ✅"
                                     } else {
-                                        format!(" {}", "❌".to_string())
+                                        " ❌"
                                     }
                                 }}
 
@@ -311,11 +311,11 @@ fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
                             <span>
                                 {move || {
                                     if email_form_len() == 0 {
-                                        format!(" {}", "*".to_string())
+                                        " *"
                                     } else if is_email_good() {
-                                        format!(" {}", "✅".to_string())
+                                        " ✅"
                                     } else {
-                                        format!(" {}", "❌".to_string())
+                                        " ❌"
                                     }
                                 }}
 
@@ -343,11 +343,11 @@ fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
                             <span>
                                 {move || {
                                     if phone_form_len() == 0 {
-                                        format!(" {}", "*".to_string())
+                                        " *"
                                     } else if is_phone_number_good() {
-                                        format!(" {}", "✅".to_string())
+                                        " ✅"
                                     } else {
-                                        format!(" {}", "❌".to_string())
+                                        " ❌"
                                     }
                                 }}
 
