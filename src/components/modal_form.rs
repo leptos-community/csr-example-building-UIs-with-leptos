@@ -243,7 +243,7 @@ fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
                             on:input=on_first_name_input
                         />
 
-                        <Suspense fallback=|| view! { format!("{}", "🤔".to_string()) }>
+                        <Suspense fallback=|| " 🤔">
                             <span>
                                 {move || {
                                     if first_name_form_len() == 0 {
@@ -275,7 +275,7 @@ fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
                             on:input=on_last_name_input
                         />
 
-                        <Suspense fallback=|| view! { format!("{}", "🤔".to_string()) }>
+                        <Suspense fallback=|| " 🤔">
                             <span>
                                 {move || {
                                     if last_name_form_len() == 0 {
@@ -307,7 +307,7 @@ fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
                             on:input=on_email_input
                         />
 
-                        <Suspense fallback=|| view! { format!("{}", "🤔".to_string()) }>
+                        <Suspense fallback=|| " 🤔">
                             <span>
                                 {move || {
                                     if email_form_len() == 0 {
@@ -339,7 +339,7 @@ fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
                             on:input=on_phone_input
                         />
 
-                        <Suspense fallback=|| view! { format!("{}", "🤔".to_string()) }>
+                        <Suspense fallback=|| " 🤔">
                             <span>
                                 {move || {
                                     if phone_form_len() == 0 {
