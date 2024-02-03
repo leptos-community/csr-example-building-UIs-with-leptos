@@ -1,14 +1,15 @@
-use js_sys::wasm_bindgen::UnwrapThrowExt;
+use crate::{pages::contact::ContactData, BASE_API_URL};
 
 use leptos::html::Div;
-
 use leptos::*;
 use leptos_router::Form;
 
 use leptos_use::on_click_outside;
 
 use gloo_net;
+use js_sys::wasm_bindgen::UnwrapThrowExt;
 use regex_lite::Regex;
+use serde::{Deserialize, Serialize};
 use web_sys::{KeyboardEvent, SubmitEvent};
 
 
@@ -64,11 +65,6 @@ pub fn FormModal() -> impl IntoView {
     }
 }
 
-
-use serde::{Deserialize, Serialize};
-
-
-use crate::{pages::contact::ContactData, BASE_API_URL};
 
 #[component]
 fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
