@@ -214,6 +214,11 @@ body > picture {
   outline-offset: 4px;
 }
 
+#submit:focus {
+  outline: 2px solid var(--green-6);
+  outline-offset: 4px;
+}
+
 #submit:disabled {
   outline: none;
 }
