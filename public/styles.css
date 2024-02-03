@@ -253,12 +253,15 @@ body > picture {
 
 .modal_content {
   z-index: 20;
-  max-height: 80vh;
-  min-height: 80vh;
+  height: fit-content;
   max-width: 80vw;
-  min-width: 80vw;
-  top: var(--size-10);
+  min-width: 40vw;
   overflow-y: auto;
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 #btn-hide {
@@ -268,7 +271,7 @@ body > picture {
 }
 
 .modal_body {
-  margin-top: var(--size-9);
+  margin-top: var(--size-fluid-4);
 }
 
 @media (max-width: 700px) {
@@ -291,12 +294,12 @@ body > picture {
 /**/
 /* Modal Contact Form */
 .modal_form_title {
-  font-size: var(--size-8);
+  font-size: var(--font-size-fluid-3);
 }
 
 .contact_form_fieldset {
-  padding: var(--size-8);
-  margin: 0 var(--size-8) var(--size-8) var(--size-8);
+  /* padding: var(--size-8); */
+  margin: 0 var(--size-fluid-4) var(--size-fluid-4) var(--size-fluid-4);
 }
 
 @media (max-width: 700px) {
@@ -311,11 +314,11 @@ body > picture {
 }
 
 .submit_contact_form {
-  margin-top: var(--size-8);
+  margin-top: var(--size-fluid-2);
 }
 
 .contact_input:first-of-type {
-  margin-top: var(--size-6);
+  margin-top: var(--size-fluid-1);
 }
 /* END modal contact form */
 
