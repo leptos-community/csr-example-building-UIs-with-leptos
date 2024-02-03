@@ -1,14 +1,15 @@
-use js_sys::wasm_bindgen::UnwrapThrowExt;
+use crate::{pages::contact::ContactData, BASE_API_URL};
 
 use leptos::html::Div;
-
 use leptos::*;
 use leptos_router::Form;
 
 use leptos_use::on_click_outside;
 
 use gloo_net;
+use js_sys::wasm_bindgen::UnwrapThrowExt;
 use regex_lite::Regex;
+use serde::{Deserialize, Serialize};
 use web_sys::{KeyboardEvent, SubmitEvent};
 
 
@@ -64,11 +65,6 @@ pub fn FormModal() -> impl IntoView {
     }
 }
 
-
-use serde::{Deserialize, Serialize};
-
-
-use crate::{pages::contact::ContactData, BASE_API_URL};
 
 #[component]
 fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
@@ -247,15 +243,15 @@ fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
                             on:input=on_first_name_input
                         />
 
-                        <Suspense fallback=|| view! { format!("{}", "🤔".to_string()) }>
+                        <Suspense fallback=|| " 🤔">
                             <span>
                                 {move || {
                                     if first_name_form_len() == 0 {
-                                        format!(" {}", "*".to_string())
+                                        " *"
                                     } else if first_name_form_len() > 2 {
-                                        format!(" {}", "✅".to_string())
+                                        " ✅"
                                     } else {
-                                        format!(" {}", "❌".to_string())
+                                        " ❌"
                                     }
                                 }}
 
@@ -279,15 +275,15 @@ fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
                             on:input=on_last_name_input
                         />
 
-                        <Suspense fallback=|| view! { format!("{}", "🤔".to_string()) }>
+                        <Suspense fallback=|| " 🤔">
                             <span>
                                 {move || {
                                     if last_name_form_len() == 0 {
-                                        format!(" {}", "*".to_string())
+                                        " *"
                                     } else if last_name_form_len() > 2 {
-                                        format!(" {}", "✅".to_string())
+                                        " ✅"
                                     } else {
-                                        format!(" {}", "❌".to_string())
+                                        " ❌"
                                     }
                                 }}
 
@@ -311,15 +307,15 @@ fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
                             on:input=on_email_input
                         />
 
-                        <Suspense fallback=|| view! { format!("{}", "🤔".to_string()) }>
+                        <Suspense fallback=|| " 🤔">
                             <span>
                                 {move || {
                                     if email_form_len() == 0 {
-                                        format!(" {}", "*".to_string())
+                                        " *"
                                     } else if is_email_good() {
-                                        format!(" {}", "✅".to_string())
+                                        " ✅"
                                     } else {
-                                        format!(" {}", "❌".to_string())
+                                        " ❌"
                                     }
                                 }}
 
@@ -343,15 +339,15 @@ fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
                             on:input=on_phone_input
                         />
 
-                        <Suspense fallback=|| view! { format!("{}", "🤔".to_string()) }>
+                        <Suspense fallback=|| " 🤔">
                             <span>
                                 {move || {
                                     if phone_form_len() == 0 {
-                                        format!(" {}", "*".to_string())
+                                        " *"
                                     } else if is_phone_number_good() {
-                                        format!(" {}", "✅".to_string())
+                                        " ✅"
                                     } else {
-                                        format!(" {}", "❌".to_string())
+                                        " ❌"
                                     }
                                 }}
 
