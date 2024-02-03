@@ -62,9 +62,9 @@ jobs:
       - name: Copy Trunk binary to $PATH
         run: cp ./trunk /usr/local/bin
 
-      - name: Build app with Trunk
-        run: trunk build --release
-
+      # Spin CLI will build frontend as well..
+      # - name: Build app with Trunk
+      #   run: trunk build --release
 
       # Install Spin CLI & Deploy
 

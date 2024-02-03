@@ -198,7 +198,7 @@ fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
     };
 
 
-    // submit the form when pressing "enter" key, even if not currently focused on an input field
+    // submit the form when pressing "enter" key, even if not currently focused on an input field; good for dealing with password manager input
     let submit_btn_ref = create_node_ref::<html::Button>();
 
     let submit_form_enter_key_listener =
