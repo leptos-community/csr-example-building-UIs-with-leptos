@@ -26,8 +26,8 @@ html {
   html {
     --brand-dark: var(--red-6);
 
-    --text-1-dark: var(--gray-3);
-    --text-2-dark: var(--gray-5);
+    --text-1-dark: var(--gray-4);
+    --text-2-dark: var(--gray-8);
 
     --surface-1-dark: var(--gray-12);
     --surface-2-dark: var(--gray-11);
@@ -302,6 +302,13 @@ body > picture {
   justify-content: flex-end;
   text-align: right;
   padding: var(--size-2);
+}
+
+@media (prefers-color-scheme: dark) {
+  .contact,
+  .contact_details {
+    color: var(--text-2);
+  }
 }
 
 /* END Contact Card */
