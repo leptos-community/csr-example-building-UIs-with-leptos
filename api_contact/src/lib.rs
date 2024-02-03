@@ -32,6 +32,14 @@ fn handle_api_contact(req: Request) -> anyhow::Result<impl IntoResponse> {
         .nth(3)
         .unwrap_or_else(|| "Error")
         .to_string();
+    let first_name = if first_name.is_ascii() {
+        let mut letters: Vec<char> = first_name.chars().collect();
+        letters[0] = letters[0].to_uppercase().nth(0).unwrap();
+        let first_name: String = letters.into_iter().collect();
+        first_name
+    } else {
+        first_name
+    };
 
     let last_name = req_str
         .lines()
@@ -39,6 +47,15 @@ fn handle_api_contact(req: Request) -> anyhow::Result<impl IntoResponse> {
         .nth(7)
         .unwrap_or_else(|| "McError")
         .to_string();
+
+    let last_name = if last_name.is_ascii() {
+        let mut letters: Vec<char> = last_name.chars().collect();
+        letters[0] = letters[0].to_uppercase().nth(0).unwrap();
+        let last_name: String = letters.into_iter().collect();
+        last_name
+    } else {
+        last_name
+    };
 
     let email = req_str
         .lines()

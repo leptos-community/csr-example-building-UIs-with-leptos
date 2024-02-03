@@ -81,10 +81,10 @@ fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
     let (last_name, set_last_name) = create_signal("".to_string());
 
     let on_first_name_input = move |ev| {
-        set_first_name(event_target_value(&ev));
+        set_first_name.update(move |name| *name = event_target_value(&ev));
     };
     let on_last_name_input = move |ev| {
-        set_last_name(event_target_value(&ev));
+        set_last_name.update(move |name| *name = event_target_value(&ev));
     };
 
     let first_name_form_len = move || first_name().len();
@@ -96,7 +96,7 @@ fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
 
     // Update email addr form field
     let on_email_input = move |ev| {
-        set_email_addr(event_target_value(&ev));
+        set_email_addr.update(move |email| *email = event_target_value(&ev));
     };
 
     // test if email addr conforms
@@ -112,7 +112,7 @@ fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
     let (phone, set_phone) = create_signal("".to_string());
 
     let on_phone_input = move |ev| {
-        set_phone(event_target_value(&ev));
+        set_phone.update(move |phone| *phone = event_target_value(&ev));
     };
 
     // test if phone number conforms
@@ -236,6 +236,7 @@ fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
                         <label class="input_label" for="first_name">
                             "First name:"
                         </label>
+
                         <input
                             class="contact_input"
                             name="first_name"
@@ -245,7 +246,8 @@ fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
                             prop:value=first_name
                             on:input=on_first_name_input
                         />
-                        <Transition fallback=|| view! { format!("{}", "🤔".to_string()) }>
+
+                        <Suspense fallback=|| view! { format!("{}", "🤔".to_string()) }>
                             <span>
                                 {move || {
                                     if first_name_form_len() == 0 {
@@ -258,7 +260,7 @@ fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
                                 }}
 
                             </span>
-                        </Transition>
+                        </Suspense>
                     </div>
 
                     <br/>
@@ -267,6 +269,7 @@ fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
                         <label class="input_label" for="last_name">
                             "Last name:"
                         </label>
+
                         <input
                             name="last_name"
                             id="last_name"
@@ -275,7 +278,8 @@ fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
                             prop:value=last_name
                             on:input=on_last_name_input
                         />
-                        <Transition fallback=|| view! { format!("{}", "🤔".to_string()) }>
+
+                        <Suspense fallback=|| view! { format!("{}", "🤔".to_string()) }>
                             <span>
                                 {move || {
                                     if last_name_form_len() == 0 {
@@ -288,7 +292,7 @@ fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
                                 }}
 
                             </span>
-                        </Transition>
+                        </Suspense>
                     </div>
 
                     <br/>
@@ -297,8 +301,8 @@ fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
                         <label class="input_label" for="email">
                             "Email address:"
                         </label>
-                        <input
 
+                        <input
                             name="email"
                             id="email"
                             type="email"
@@ -306,7 +310,8 @@ fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
                             prop:value=email_addr
                             on:input=on_email_input
                         />
-                        <Transition fallback=|| view! { format!("{}", "🤔".to_string()) }>
+
+                        <Suspense fallback=|| view! { format!("{}", "🤔".to_string()) }>
                             <span>
                                 {move || {
                                     if email_form_len() == 0 {
@@ -319,7 +324,7 @@ fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
                                 }}
 
                             </span>
-                        </Transition>
+                        </Suspense>
                     </div>
 
                     <br/>
@@ -328,6 +333,7 @@ fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
                         <label class="input_label" for="phone">
                             "Phone number:"
                         </label>
+
                         <input
                             name="phone"
                             id="phone"
@@ -336,7 +342,8 @@ fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
                             prop:value=phone
                             on:input=on_phone_input
                         />
-                        <Transition fallback=|| view! { format!("{}", "🤔".to_string()) }>
+
+                        <Suspense fallback=|| view! { format!("{}", "🤔".to_string()) }>
                             <span>
                                 {move || {
                                     if phone_form_len() == 0 {
@@ -349,7 +356,7 @@ fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
                                 }}
 
                             </span>
-                        </Transition>
+                        </Suspense>
                     </div>
 
                     <br/>
