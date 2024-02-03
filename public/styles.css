@@ -203,6 +203,44 @@ body > picture {
 /* --- END home page --- */
 
 /* Modal (Portal Overlay) */
+
+#btn-show:hover {
+  outline: 2px solid var(--brand);
+  outline-offset: 4px;
+}
+
+#submit:hover {
+  outline: 2px solid var(--green-6);
+  outline-offset: 4px;
+}
+
+#submit:focus {
+  outline: 2px solid var(--green-6);
+  outline-offset: 4px;
+}
+
+#submit:disabled {
+  outline: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  #btn-show {
+    background-color: var(--brand);
+    color: var(--stone-2);
+  }
+
+  #submit {
+    background-color: var(--green-6);
+    color: var(--stone-2);
+  }
+
+  #submit:disabled {
+    background-color: var(--brand);
+    color: var(--stone-2);
+    outline: none;
+  }
+}
+
 .modal_background {
   position: fixed;
   z-index: 10;
