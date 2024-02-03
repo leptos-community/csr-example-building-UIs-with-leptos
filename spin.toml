@@ -13,28 +13,11 @@ route = "/..."
 component = "csr-examples"
 
 
-# Set up "examples" page routing
-# [[trigger.http]]
-# route = "/examples/..."
-# component = "csr-examples"
-
-
-# Set up "contact" page routing
-# [[trigger.http]]
-# route = "/contact/..."
-# component = "csr-examples"
-
-
-# --- (does not work) ---
-# Handle 404 not-found
-# [[trigger.http]]
-# route = "/*"
-# component = "csr-examples"
-
-
 [component.csr-examples.build]
-# command = "trunk build --release"
-command = "trunk build"
+# dev
+# command = "trunk build"
+# prod
+command = "trunk build --release"
 watch = ["src/**/*.rs", "Cargo.toml"]
 
 [component.csr-examples]
