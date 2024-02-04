@@ -340,20 +340,10 @@ body > picture {
   margin: var(--size-4);
 }
 
-.contact > h2:hover {
-  font-size: var(--size-9);
-  transition: font-size 0.9s ease-in-out;
-}
 .contact > h2:not(hover) {
-  transition: font-size 0.6s ease-in-out;
-}
-
-.contact > h3:not(hover) {
-  padding-bottom: var(--size-1);
-  border-bottom: var(--size-1) solid var(--blue-10);
   transition: all 0.7s ease-out;
 }
-.contact > h3:hover {
+.contact > h2:hover {
   margin-bottom: 0;
   padding-bottom: var(--size-3);
   border-bottom: var(--size-3) solid var(--blue-10);
@@ -367,15 +357,6 @@ body > picture {
   justify-content: flex-end;
   text-align: right;
   padding: var(--size-2);
-}
-
-.contact_details:hover {
-  font-size: var(--font-size-fluid-1);
-  transition: font-size 0.9s ease-in-out;
-}
-
-.contact_details:not(hover) {
-  transition: font-size 0.6s ease-in-out;
 }
 
 @media (prefers-color-scheme: dark) {
