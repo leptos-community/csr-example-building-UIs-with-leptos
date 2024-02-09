@@ -1,6 +1,7 @@
 use crate::{pages::contact::ContactData, BASE_API_URL};
 
 use leptos::html::Div;
+use leptos::html::{input, Input};
 use leptos::*;
 use leptos_router::Form;
 
@@ -119,6 +120,19 @@ fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
 
     let phone_form_len = move || phone().len();
 
+    // Set up autofocus for contact form
+    let focus_input_ref: NodeRef<Input> = create_node_ref();
+    create_effect(move |_| {
+        if focus_input_ref.get().is_some() {
+            let _ = focus_input_ref
+                .get()
+                .expect("couldn't get ref")
+                .focus()
+                .expect("couldn't focus");
+        }
+    });
+
+
     // Disable submit button until contact form meets requirements
     let check_form_meets_requirements_resource = create_local_resource(
         move || {
@@ -234,6 +248,7 @@ fn ModalBody(set_show_modal: WriteSignal<bool>) -> impl IntoView {
                         </label>
 
                         <input
+                            _ref=focus_input_ref
                             class="contact_input"
                             name="first_name"
                             id="first_name"
