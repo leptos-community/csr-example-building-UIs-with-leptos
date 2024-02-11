@@ -3,18 +3,12 @@ FROM rust:1-bookworm AS builder
 WORKDIR /home/workspace
 
 RUN rustup default nightly 
-RUN rustup target add wasm32-unknown-unknown
-
-RUN cargo install --locked cargo-leptos
+RUN rustup target add wasm32-unknown-unknown wasm32-wasi
 
 FROM builder AS development
+RUN curl -fsSL https://developer.fermyon.com/downloads/install.sh | bash && mv spin /usr/local/bin/
 RUN cargo install --locked trunk 
 RUN cargo install leptosfmt
-RUN sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/v1.1.5/zsh-in-docker.sh)" -- \
-    -t robbyrussell \
-    -p git \
-    -p https://github.com/zsh-users/zsh-autosuggestions \
-    -p https://github.com/zsh-users/zsh-completions
 
 EXPOSE 3000
 
